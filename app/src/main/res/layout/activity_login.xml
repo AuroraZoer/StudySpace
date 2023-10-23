@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".loginORregister.LoginActivity">
+
+    <ImageView
+        android:id="@+id/img_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="150dp"
+        android:contentDescription="logo"
+        android:src="@drawable/logo" />
+
+    <TextView
+        android:id="@+id/txt_app_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/baloo_bhaina"
+        android:shadowColor="@color/primaryDark"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:text="@string/app_name"
+        android:textColor="@color/primary"
+        android:textSize="40sp" />
+
+
+    <EditText
+        android:id="@+id/email"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/custom_edittext"
+        android:drawableLeft="@drawable/ic_baseline_email_24"
+        android:drawablePadding="8dp"
+        android:fontFamily="@font/baloo_bhaina"
+        android:hint="@string/email"
+        android:inputType="text"
+        android:paddingLeft="10dp"
+        android:textColor="@color/lightBlack"
+        android:textColorHint="@color/lightBlack"
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/custom_edittext"
+        android:drawableLeft="@drawable/ic_baseline_lock_24"
+        android:drawablePadding="8dp"
+        android:fontFamily="@font/baloo_bhaina"
+        android:hint="@string/password"
+        android:inputType="textPassword"
+        android:paddingLeft="10dp"
+        android:textColor="@color/lightBlack"
+        android:textColorHint="@color/lightBlack"
+        android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/login_button_selector"
+        android:elevation="5dp"
+        android:fontFamily="@font/baloo_bhaina"
+        android:text="@string/login"
+        android:textColor="@color/white"
+        android:textSize="24sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:text="@string/notHaveAccount"
+        android:fontFamily="@font/baloo_bhaina"
+        android:textColor="@color/lightBlack"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:textSize="14sp"/>
+
+    <Button
+        android:id="@+id/btn_register"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/login_button_selector"
+        android:elevation="5dp"
+        android:fontFamily="@font/baloo_bhaina"
+        android:text="@string/register"
+        android:textColor="@color/white"
+        android:textSize="24sp" />
+
+</LinearLayout>

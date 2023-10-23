@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- When Button is not pressed and not focused -->
+    <item android:state_enabled="true"
+        android:state_hovered="false"
+        android:state_pressed="false">
+        <shape android:shape="rectangle"
+            xmlns:android="http://schemas.android.com/apk/res/android">
+            <solid android:color="@color/primary"/>
+            <corners android:radius="10dp" />
+            <!--    <gradient-->
+            <!--        android:centerColor="#80b3c9"-->
+            <!--        android:startColor="#86cfe0"-->
+            <!--        android:endColor="#86cfe0"-->
+            <!--        android:type="linear"/>-->
+        </shape>
+    </item>
+
+    <!-- When Button is pressed -->
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle"
+            xmlns:android="http://schemas.android.com/apk/res/android">
+            <solid android:color="@color/primaryDark"/>
+            <corners android:radius="10dp" />
+            <!--    <gradient-->
+            <!--        android:centerColor="#80b3c9"-->
+            <!--        android:startColor="#86cfe0"-->
+            <!--        android:endColor="#86cfe0"-->
+            <!--        android:type="linear"/>-->
+        </shape>
+    </item>
+
+    <!-- When Button is hovered -->
+    <item android:state_hovered="true">
+        <shape android:shape="rectangle"
+            xmlns:android="http://schemas.android.com/apk/res/android">
+            <corners android:radius="10dp" />
+                <gradient
+                    android:centerColor="#80b3c9"
+                    android:startColor="#86cfe0"
+                    android:endColor="#86cfe0"
+                    android:type="linear"/>
+        </shape>
+    </item>
+
+</selector>

@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">StudySpace</string>
+    <string name="login">login</string>
+    <string name="register">sign up</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="notHaveAccount">Don\'t have an account? Sign up now.</string>
+    <string name="alreadyHaveAccount">Already have an account? Login now.</string>
+
+    <string name="search">Search</string>
+    <string name="analyse">Analyse</string>
+    <string name="profile">Profile</string>
+
+
+</resources>
