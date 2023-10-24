@@ -25,19 +25,21 @@ public class LoginActivity extends AppCompatActivity {
         binding.btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Input password, email
                 String emailText = binding.email.getText().toString();
                 String passwordText = binding.password.getText().toString();
 
                 if (emailText.equals("") || passwordText.equals("")) {
+                    // Check if the user has entered all the fields
                     Toast.makeText(LoginActivity.this, "Please enter all the fields", Toast.LENGTH_SHORT).show();
                 } else {
-                    Boolean checkEmailPassword = databaseHelper.checkEmailPassword(emailText, passwordText);
-                    if (checkEmailPassword == true) {
+                    // Check if the email and password match
+                    if (databaseHelper.checkEmailPassword(emailText, passwordText)) {
                         Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(LoginActivity.this, SearchActivity.class);
                         startActivity(intent);
                     } else {
-                        Toast.makeText(LoginActivity.this, "Invalid Credentials", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "Incorrect email or password. Please try again.", Toast.LENGTH_SHORT).show();
                     }
                 }
             }

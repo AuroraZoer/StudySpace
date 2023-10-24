@@ -42,7 +42,7 @@ public class DBUtil extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         // Create the User table
         String createUserTable = "CREATE TABLE " + TABLE_USER + " (" +
-                USER_COLUMN_ID + " INTEGER PRIMARY KEY, " +
+                USER_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 USER_COLUMN_USERNAME + " TEXT NOT NULL, " +
                 USER_COLUMN_EMAIL + " TEXT NOT NULL UNIQUE, " +
                 USER_COLUMN_PASSWORD + " TEXT NOT NULL);";
@@ -50,7 +50,7 @@ public class DBUtil extends SQLiteOpenHelper {
 
         // Create the StudyRoom table
         String createStudyRoomTable = "CREATE TABLE " + TABLE_STUDY_ROOM + " (" +
-                ROOM_COLUMN_ID + " INTEGER PRIMARY KEY, " +
+                ROOM_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 ROOM_COLUMN_NAME + " INTEGER NOT NULL, " +
                 ROOM_COLUMN_BUILDING + " INTEGER NOT NULL, " +
                 ROOM_COLUMN_MORNING_AVAILABILITY + " INTEGER, " +
@@ -60,7 +60,7 @@ public class DBUtil extends SQLiteOpenHelper {
 
         // Create the StudyTime table
         String createStudyTimeTable = "CREATE TABLE " + TABLE_STUDY_TIME + " (" +
-                TIME_COLUMN_ID + " INTEGER PRIMARY KEY, " +
+                TIME_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 TIME_COLUMN_USER_ID + " INTEGER, " +
                 TIME_COLUMN_ROOM_ID + " INTEGER, " +
                 TIME_COLUMN_START_TIME + " TEXT, " +
@@ -76,57 +76,31 @@ public class DBUtil extends SQLiteOpenHelper {
 
     }
 
-    /**
-     * Insert a new user into the database
-     *
-     * @param username the username of the user
-     * @param password the password of the user
-     * @param email    the email of the user
-     * @return true if the user was inserted successfully, false otherwise
-     */
-    public Boolean insertData(String username, String password, String email) {
+    public boolean addUser(User user) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(USER_COLUMN_USERNAME, username);
-        contentValues.put(USER_COLUMN_PASSWORD, password);
-        contentValues.put(USER_COLUMN_EMAIL, email);
+        contentValues.put(USER_COLUMN_USERNAME, user.getUsername());
+        contentValues.put(USER_COLUMN_EMAIL, user.getEmail());
+        contentValues.put(USER_COLUMN_PASSWORD, user.getPassword());
         long result = db.insert(TABLE_USER, null, contentValues);
         db.close();
-
         return result != -1;
     }
 
-    /**
-     * Check if the email already exists in the database
-     *
-     * @param email the email to check
-     * @return true if the email exists, false otherwise
-     */
-    public Boolean checkEmail(String email) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_USER + " WHERE " + USER_COLUMN_EMAIL + " = ?", new String[]{email});
+    public boolean checkEmailExist(String email) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT " + USER_COLUMN_ID + " FROM " + TABLE_USER + " WHERE " + USER_COLUMN_EMAIL + " = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{email});
         boolean emailExists = cursor.getCount() > 0;
         cursor.close();
-        db.close();
-
         return emailExists;
-
     }
 
-    /**
-     * Check if the email and password match a user in the database
-     *
-     * @param email    the email to check
-     * @param password the password to check
-     * @return true if the email and password match a user in the database, false otherwise
-     */
-    public Boolean checkEmailPassword(String email, String password) {
-        SQLiteDatabase db = this.getWritableDatabase();
+    public boolean checkEmailPassword(String email, String password) {
+        SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_USER + " WHERE " + USER_COLUMN_EMAIL + " = ? AND " + USER_COLUMN_PASSWORD + " = ?", new String[]{email, password});
         boolean loginSuccessful = cursor.getCount() > 0;
         cursor.close();
-        db.close();
-
         return loginSuccessful;
     }
 
