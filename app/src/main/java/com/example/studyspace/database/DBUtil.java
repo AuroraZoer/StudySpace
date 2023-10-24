@@ -76,6 +76,11 @@ public class DBUtil extends SQLiteOpenHelper {
 
     }
 
+    /**
+     * Add a user to the database
+     * @param user The user to add
+     * @return True if the user was added successfully, false otherwise
+     */
     public boolean addUser(User user) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -87,6 +92,11 @@ public class DBUtil extends SQLiteOpenHelper {
         return result != -1;
     }
 
+    /**
+     * Check if the email already exists in the database
+     * @param email The email to check
+     * @return True if the email exists, false otherwise
+     */
     public boolean checkEmailExist(String email) {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT " + USER_COLUMN_ID + " FROM " + TABLE_USER + " WHERE " + USER_COLUMN_EMAIL + " = ?";
@@ -96,6 +106,12 @@ public class DBUtil extends SQLiteOpenHelper {
         return emailExists;
     }
 
+    /**
+     * Check if the email and password match
+     * @param email The email to check
+     * @param password The password to check
+     * @return
+     */
     public boolean checkEmailPassword(String email, String password) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_USER + " WHERE " + USER_COLUMN_EMAIL + " = ? AND " + USER_COLUMN_PASSWORD + " = ?", new String[]{email, password});
@@ -103,5 +119,33 @@ public class DBUtil extends SQLiteOpenHelper {
         cursor.close();
         return loginSuccessful;
     }
+
+    /**
+     * Get the user ID if the login is successful
+     * @param email The email to check
+     * @param password The password to check
+     * @return The user ID if the login is successful, -1 otherwise
+     */
+    public int getUserIdIfLoginSuccessful(String email, String password) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] columns = {USER_COLUMN_ID};
+        String selection = USER_COLUMN_EMAIL + " = ? AND " + USER_COLUMN_PASSWORD + " = ?";
+        String[] selectionArgs = {email, password};
+        Cursor cursor = db.query(TABLE_USER, columns, selection, selectionArgs, null, null, null);
+
+        int userId = -1;
+
+        if (cursor.moveToFirst()) {
+            int columnIndex = cursor.getColumnIndex(USER_COLUMN_ID);
+
+            if (columnIndex >= 0) {
+                userId = cursor.getInt(columnIndex);
+            }
+        }
+
+        cursor.close();
+        return userId;
+    }
+
 
 }

@@ -35,11 +35,17 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
                     // Check if the email and password match
                     if (databaseHelper.checkEmailPassword(emailText, passwordText)) {
-                        Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(LoginActivity.this, SearchActivity.class);
-                        startActivity(intent);
+                        int userId = databaseHelper.getUserIdIfLoginSuccessful(emailText, passwordText);
+                        if (userId != -1) {
+                            Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(LoginActivity.this, SearchActivity.class);
+                            intent.putExtra("user_id", userId);
+                            startActivity(intent);
+                        } else {
+                            Toast.makeText(LoginActivity.this, "User ID not found.", Toast.LENGTH_SHORT).show();
+                        }
                     } else {
-                        Toast.makeText(LoginActivity.this, "Incorrect email or password. Please try again.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "Incorrect email or password.\nPlease try again.", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
