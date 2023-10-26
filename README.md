@@ -19,8 +19,8 @@ User {
 
 StudyRoom {
      INTEGER RoomID PK
-     INTEGER Room
-     INTEGER Building
+     TEXT Room
+     TEXT Building
      INTEGER MorningAvailability 
      INTEGER AfternoonAvailability 
      INTEGER EveningAvailability 

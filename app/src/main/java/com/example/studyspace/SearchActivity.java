@@ -1,14 +1,22 @@
 package com.example.studyspace;
 
+import android.annotation.SuppressLint;
+import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.studyspace.database.DBUtil;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class SearchActivity extends AppCompatActivity {
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
+public class SearchActivity extends AppCompatActivity {
+    DBUtil databaseHelper;
+    TextView availability;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,5 +41,33 @@ public class SearchActivity extends AppCompatActivity {
             }
             return false;
         });
+
+
+        availability = findViewById(R.id.availability);
+        getAvailability();
+
+//        List<String> allBuildings = databaseHelper.getBuilding();
+
+    }
+
+    @SuppressLint("SetTextI18n")
+    public String getAvailability() {
+        Date currentDate = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH");
+        String currentHour = dateFormat.format(currentDate);
+        String timeOfDay;
+        if (currentHour.compareTo("12") < 0) {
+            timeOfDay = "MorningAvailability";
+            availability.setText("Good Morning!");
+        }
+        else if (currentHour.compareTo("18") < 0) {
+            timeOfDay = "AfternoonAvailability";
+            availability.setText("Good Afternoon!");
+        }
+        else {
+            timeOfDay = "EveningAvailability";
+            availability.setText("Good Evening!");
+        }
+        return timeOfDay;
     }
 }

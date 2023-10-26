@@ -6,6 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DBUtil extends SQLiteOpenHelper {
     private static final String databaseName = "StudySpace.db";
     private static final int databaseVersion = 1;
@@ -51,8 +54,8 @@ public class DBUtil extends SQLiteOpenHelper {
         // Create the StudyRoom table
         String createStudyRoomTable = "CREATE TABLE " + TABLE_STUDY_ROOM + " (" +
                 ROOM_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                ROOM_COLUMN_NAME + " INTEGER NOT NULL, " +
-                ROOM_COLUMN_BUILDING + " INTEGER NOT NULL, " +
+                ROOM_COLUMN_NAME + " TEXT NOT NULL, " +
+                ROOM_COLUMN_BUILDING + " TEXT NOT NULL, " +
                 ROOM_COLUMN_MORNING_AVAILABILITY + " INTEGER, " +
                 ROOM_COLUMN_AFTERNOON_AVAILABILITY + " INTEGER, " +
                 ROOM_COLUMN_EVENING_AVAILABILITY + " INTEGER);";
@@ -73,9 +76,12 @@ public class DBUtil extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(("DROP TABLE IF EXISTS " + TABLE_USER));
-
+        db.execSQL(("DROP TABLE IF EXISTS " + TABLE_STUDY_ROOM));
+        db.execSQL(("DROP TABLE IF EXISTS " + TABLE_STUDY_TIME));
+        onCreate(db);
     }
 
+    // User table methods
     /**
      * Add a user to the database
      * @param user The user to add
@@ -146,6 +152,51 @@ public class DBUtil extends SQLiteOpenHelper {
         cursor.close();
         return userId;
     }
+
+    // StudyRoom table methods
+    public List<String> getBuilding() {
+        List<String> buildingList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        // Specify the result column (projection)
+        String[] projection = {ROOM_COLUMN_BUILDING};
+        // Query the database
+        Cursor cursor = db.query(TABLE_STUDY_ROOM, projection, null, null, null, null, null);
+        // Add the building values to the list
+        if (cursor.moveToFirst()) {
+            do {
+                buildingList.add(cursor.getString(0));
+            } while (cursor.moveToNext());
+        }
+        // Close the cursor and database
+        cursor.close();
+        db.close();
+        return buildingList;
+    }
+
+    public List<String> getRoomsByBuilding(String buildingSelected) {
+        List<String> roomList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        // Specify the result column (projection)
+        String[] projection = {ROOM_COLUMN_NAME};
+        // Add the selection condition (buildingSelected)
+        String selection = ROOM_COLUMN_BUILDING + " = ?";
+        String[] selectionArgs = {buildingSelected};
+        // Query the database
+        Cursor cursor = db.query(TABLE_STUDY_ROOM, projection, selection, selectionArgs, null, null, null);
+        // Add the room names to the list
+        if (cursor.moveToFirst()) {
+            do {
+                roomList.add(cursor.getString(0));
+            } while (cursor.moveToNext());
+        }
+        // Close the cursor and database
+        cursor.close();
+        db.close();
+        return roomList;
+    }
+
+
+
 
 
 }

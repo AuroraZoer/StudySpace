@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:background="@color/white"
     android:gravity="center"
-    tools:context=".loginORregister.RegisterActivity">
+    tools:context=".RegisterActivity">
 
     <ImageView
         android:id="@+id/img_logo"
@@ -84,6 +84,7 @@
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_marginTop="20dp"
+        android:padding="0dp"
         android:background="@drawable/login_button_selector"
         android:elevation="5dp"
         android:fontFamily="@font/baloo_bhaina"
@@ -93,7 +94,7 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="wrap_content"
         android:text="@string/alreadyHaveAccount"
         android:fontFamily="@font/baloo_bhaina"
         android:textColor="@color/lightBlack"
@@ -106,6 +107,7 @@
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_marginTop="10dp"
+        android:padding="0dp"
         android:background="@drawable/login_button_selector"
         android:elevation="5dp"
         android:fontFamily="@font/baloo_bhaina"
