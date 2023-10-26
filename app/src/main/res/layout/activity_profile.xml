@@ -7,12 +7,25 @@
     tools:context=".ProfileActivity">
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/profile"
-        android:fontFamily="@font/baloo_bhaina"
-        android:textSize="36sp"
-        android:layout_centerInParent="true"/>
+            android:id="@+id/profile_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/profile"
+            android:textColor="@color/primary"
+            android:fontFamily="@font/baloo_bhaina"
+            android:textSize="36sp"
+            android:layout_centerHorizontal="true"/>
+
+    <TextView
+            android:id="@+id/profile_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/profile"
+            android:textColor="@color/primary"
+            android:fontFamily="@font/baloo_bhaina"
+            android:textSize="28sp"
+            android:layout_below="@+id/profile_username"
+            android:layout_centerHorizontal="true"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"

@@ -138,9 +138,7 @@ public class DBUtil extends SQLiteOpenHelper {
         String selection = USER_COLUMN_EMAIL + " = ? AND " + USER_COLUMN_PASSWORD + " = ?";
         String[] selectionArgs = {email, password};
         Cursor cursor = db.query(TABLE_USER, columns, selection, selectionArgs, null, null, null);
-
         int userId = -1;
-
         if (cursor.moveToFirst()) {
             int columnIndex = cursor.getColumnIndex(USER_COLUMN_ID);
 
@@ -148,10 +146,31 @@ public class DBUtil extends SQLiteOpenHelper {
                 userId = cursor.getInt(columnIndex);
             }
         }
-
         cursor.close();
         return userId;
     }
+
+    public User getUserById(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] columns = {USER_COLUMN_ID, USER_COLUMN_USERNAME, USER_COLUMN_EMAIL, USER_COLUMN_PASSWORD};
+        String selection = USER_COLUMN_ID + " = ?";
+        String[] selectionArgs = {String.valueOf(id)};
+        Cursor cursor = db.query(TABLE_USER, columns, selection, selectionArgs, null, null, null);
+        User user = null;
+        if (cursor.moveToFirst()) {
+            int idIndex = cursor.getColumnIndex(USER_COLUMN_ID);
+            int usernameIndex = cursor.getColumnIndex(USER_COLUMN_USERNAME);
+            int emailIndex = cursor.getColumnIndex(USER_COLUMN_EMAIL);
+            int passwordIndex = cursor.getColumnIndex(USER_COLUMN_PASSWORD);
+
+            if (idIndex >= 0 && usernameIndex >= 0 && emailIndex >= 0 && passwordIndex >= 0) {
+                user = new User(cursor.getInt(idIndex), cursor.getString(usernameIndex), cursor.getString(emailIndex), cursor.getString(passwordIndex));
+            }
+        }
+        cursor.close();
+        return user;
+    }
+
 
     // StudyRoom table methods
     public List<String> getBuilding() {

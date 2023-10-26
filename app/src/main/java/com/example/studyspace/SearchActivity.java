@@ -1,6 +1,7 @@
 package com.example.studyspace;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,13 +17,15 @@ import java.util.List;
 
 public class SearchActivity extends AppCompatActivity {
     DBUtil databaseHelper;
+    int userId;
     TextView availability;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        int userId = getIntent().getIntExtra("user_id", -1);
+        userId = getIntent().getIntExtra("user_id", -1);
+        Log.d("SearchActivity", "User ID: " + userId);
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.bottom_search);
