@@ -23,13 +23,13 @@ public class AnalyseActivity extends AppCompatActivity {
 
     }
 
-    public void initAnalyse() {
+    private void initAnalyse() {
         databaseHelper = new DBUtil(this);
         userId = getIntent().getIntExtra("user_id", -1);
         Log.d(TAG, "User ID: " + userId);
     }
 
-    public void bottomNavigationViewInit() {
+    private void bottomNavigationViewInit() {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.bottom_analyse);
 

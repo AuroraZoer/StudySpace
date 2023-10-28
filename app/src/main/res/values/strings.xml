@@ -11,7 +11,20 @@
     <string name="search">Search</string>
     <string name="search_button">Confirm Search</string>
     <string name="analyse">Analyse</string>
+
     <string name="profile">Profile</string>
+    <string name="info">info</string>
+    <string name="logout">logout</string>
+    <string name="edit">edit</string>
+    <string name="save">save</string>
+    <string name="cancel">cancel</string>
+    <string name="duration">Duration</string>
+    <string name="count">Count</string>
+
+    <string name="MC">COMP3011J Mobile Computing</string>
+    <string name="zyr">Yiran Zhao</string>
+    <string name="ucd">UCD number 21207295</string>
+    <string name="bjut">BJUT number 21372120</string>
 
 
 </resources>

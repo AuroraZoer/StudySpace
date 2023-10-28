@@ -33,7 +33,7 @@ public class SearchActivity extends AppCompatActivity {
 
     }
 
-    public void initSearch() {
+    private void initSearch() {
         databaseHelper = new DBUtil(this);
         availability = findViewById(R.id.availability);
         getAvailability();
@@ -42,7 +42,7 @@ public class SearchActivity extends AppCompatActivity {
 
     }
 
-    public void bottomNavigationViewInit(){
+    private void bottomNavigationViewInit() {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.bottom_search);
 
@@ -66,7 +66,7 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     @SuppressLint("SetTextI18n")
-    public String getAvailability() {
+    private String getAvailability() {
         Date currentDate = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("HH");
         String currentHour = dateFormat.format(currentDate);

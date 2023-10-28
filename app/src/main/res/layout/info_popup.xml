@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="350dp"
+    android:layout_height="200dp"
+    android:background="@drawable/popupbkg"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="@string/MC"
+        android:textColor="@color/primary"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:fontFamily="@font/baloo_bhaina" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/zyr"
+        android:textColor="@color/primary"
+        android:textSize="26sp"
+        android:gravity="center"
+        android:fontFamily="@font/baloo_bhaina" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/ucd"
+        android:textColor="@color/primary"
+        android:textSize="22sp"
+        android:gravity="center"
+        android:fontFamily="@font/baloo_bhaina" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/bjut"
+        android:textColor="@color/primary"
+        android:textSize="22sp"
+        android:gravity="center"
+        android:fontFamily="@font/baloo_bhaina" />
+
+</LinearLayout>
