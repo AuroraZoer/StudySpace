@@ -8,12 +8,7 @@
         <shape android:shape="rectangle"
                xmlns:android="http://schemas.android.com/apk/res/android">
             <solid android:color="@color/primary"/>
-            <corners android:radius="30dp" />
-            <!--    <gradient-->
-            <!--        android:centerColor="#80b3c9"-->
-            <!--        android:startColor="#86cfe0"-->
-            <!--        android:endColor="#86cfe0"-->
-            <!--        android:type="linear"/>-->
+            <corners android:radius="5dp" />
         </shape>
     </item>
 
@@ -22,12 +17,7 @@
         <shape android:shape="rectangle"
                xmlns:android="http://schemas.android.com/apk/res/android">
             <solid android:color="@color/primaryDark"/>
-            <corners android:radius="30dp" />
-            <!--    <gradient-->
-            <!--        android:centerColor="#80b3c9"-->
-            <!--        android:startColor="#86cfe0"-->
-            <!--        android:endColor="#86cfe0"-->
-            <!--        android:type="linear"/>-->
+            <corners android:radius="5dp" />
         </shape>
     </item>
 

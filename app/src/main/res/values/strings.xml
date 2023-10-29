@@ -9,7 +9,9 @@
     <string name="alreadyHaveAccount">Already have an account? Login now.</string>
 
     <string name="search">Search</string>
+    <string name="select_building">Select Building</string>
     <string name="search_button">Confirm Search</string>
+
     <string name="analyse">Analyse</string>
 
     <string name="profile">Profile</string>

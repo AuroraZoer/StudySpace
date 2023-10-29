@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="16dp"
+    android:paddingTop="10dp"
+    android:paddingEnd="16dp"
+    android:paddingBottom="10dp"
+    android:ellipsize="end"
+    android:maxLines="1"
+    android:textSize="18sp"
+    android:textColor="@color/primary"
+    android:fontFamily="@font/baloo_bhaina"
+    android:textAppearance="?attr/textAppearanceSubtitle1">
+
+</TextView>

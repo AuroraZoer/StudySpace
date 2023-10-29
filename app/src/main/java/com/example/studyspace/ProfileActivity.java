@@ -18,8 +18,8 @@ public class ProfileActivity extends AppCompatActivity {
     private static final String TAG = "ProfileActivity";
     DBUtil databaseHelper;
     int userId;
-    TextView username, email;
-    ImageButton infoButton;
+    TextView username, email, count, duration;
+    ImageButton infoButton, logoutButton;
     Dialog dialog;
 
     @Override
@@ -51,6 +51,18 @@ public class ProfileActivity extends AppCompatActivity {
             Log.d(TAG, "Info button clicked");
             showInfoDialog();
         });
+        logoutButton = findViewById(R.id.logout_button);
+        logoutButton.setOnClickListener(view -> {
+            Log.d(TAG, "Logout button clicked");
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        });
+
+        count = findViewById(R.id.profile_data_count);
+        duration = findViewById(R.id.profile_data_duration);
+        count.setText(String.valueOf(databaseHelper.gerUserStudyCount(userId)));
+
     }
 
     private void showInfoDialog() {

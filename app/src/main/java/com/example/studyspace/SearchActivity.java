@@ -1,26 +1,32 @@
 package com.example.studyspace;
 
 import android.annotation.SuppressLint;
-import android.util.Log;
-import android.widget.TextView;
-
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.studyspace.database.DBUtil;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 public class SearchActivity extends AppCompatActivity {
     private static final String TAG = "SearchActivity";
     DBUtil databaseHelper;
     int userId;
     TextView availability;
+    AutoCompleteTextView autoCompleteTextView;
+    String[] buildings;
+    ArrayAdapter<String> adapterItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,8 +34,6 @@ public class SearchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search);
         bottomNavigationViewInit();
         initSearch();
-
-//        List<String> allBuildings = databaseHelper.getBuilding();
 
     }
 
@@ -39,6 +43,15 @@ public class SearchActivity extends AppCompatActivity {
         getAvailability();
         userId = getIntent().getIntExtra("user_id", -1);
         Log.d(TAG, "User ID: " + userId);
+        autoCompleteTextView = findViewById(R.id.search_building_text);
+        buildings = databaseHelper.getAllBuildings();
+        adapterItems = new ArrayAdapter<>(this, R.layout.list_item, buildings);
+        autoCompleteTextView.setAdapter(adapterItems);
+        autoCompleteTextView.setOnItemClickListener((adapterView, view, i, l) -> {
+            String building = adapterView.getItemAtPosition(i).toString();
+            Log.d(TAG, "Building: " + building);
+            Toast.makeText(SearchActivity.this, building, Toast.LENGTH_SHORT).show();
+        });
 
     }
 

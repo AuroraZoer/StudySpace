@@ -2,13 +2,13 @@ package com.example.studyspace.database;
 
 public class StudyRoom {
     private int roomID;
-    private int room;
-    private int building;
+    private String room;
+    private String building;
     private int morningAvailability;
     private int afternoonAvailability;
     private int eveningAvailability;
 
-    public StudyRoom(int roomID, int room, int building, int morningAvailability, int afternoonAvailability, int eveningAvailability) {
+    public StudyRoom(int roomID, String room, String building, int morningAvailability, int afternoonAvailability, int eveningAvailability) {
         this.roomID = roomID;
         this.room = room;
         this.building = building;
@@ -25,19 +25,19 @@ public class StudyRoom {
         this.roomID = roomID;
     }
 
-    public int getRoom() {
+    public String getRoom() {
         return room;
     }
 
-    public void setRoom(int room) {
+    public void setRoom(String room) {
         this.room = room;
     }
 
-    public int getBuilding() {
+    public String getBuilding() {
         return building;
     }
 
-    public void setBuilding(int building) {
+    public void setBuilding(String building) {
         this.building = building;
     }
 

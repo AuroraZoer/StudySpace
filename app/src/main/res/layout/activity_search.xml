@@ -7,30 +7,56 @@
     tools:context=".SearchActivity">
 
     <TextView
-            android:id="@+id/availability"
-            android:layout_width="wrap_content"
-            android:layout_height="60dp"
-            android:text="@string/search"
-            android:fontFamily="@font/baloo_bhaina"
+        android:id="@+id/availability"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/baloo_bhaina"
+        android:text="@string/search"
+        android:textColor="@color/primary"
+        android:textSize="36sp" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/search_building"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/availability"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="10dp"
+        android:hint="@string/select_building"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+
+        <AutoCompleteTextView
+            android:id="@+id/search_building_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:textColor="@color/primary"
-            android:textSize="36sp"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"/>
+            android:fontFamily="@font/baloo_bhaina"
+            android:textSize="20sp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:inputType="text" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
 
     <Button
-            android:id="@+id/search_button"
-            android:layout_below="@+id/availability"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/search_button"
-            android:textSize="24sp"
-            android:fontFamily="@font/baloo_bhaina"
-            android:textColor="@color/white"
-            android:background="@drawable/button_selector"
-            android:padding="0dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"/>
+        android:id="@+id/search_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/search_building"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:background="@drawable/button_selector"
+        android:fontFamily="@font/baloo_bhaina"
+        android:padding="0dp"
+        android:text="@string/search_button"
+        android:textColor="@color/white"
+        android:textSize="24sp" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,8 +83,10 @@ public class DBUtil extends SQLiteOpenHelper {
     }
 
     // User table methods
+
     /**
      * Add a user to the database
+     *
      * @param user The user to add
      * @return True if the user was added successfully, false otherwise
      */
@@ -100,6 +103,7 @@ public class DBUtil extends SQLiteOpenHelper {
 
     /**
      * Check if the email already exists in the database
+     *
      * @param email The email to check
      * @return True if the email exists, false otherwise
      */
@@ -114,7 +118,8 @@ public class DBUtil extends SQLiteOpenHelper {
 
     /**
      * Check if the email and password match
-     * @param email The email to check
+     *
+     * @param email    The email to check
      * @param password The password to check
      * @return
      */
@@ -128,7 +133,8 @@ public class DBUtil extends SQLiteOpenHelper {
 
     /**
      * Get the user ID if the login is successful
-     * @param email The email to check
+     *
+     * @param email    The email to check
      * @param password The password to check
      * @return The user ID if the login is successful, -1 otherwise
      */
@@ -156,15 +162,12 @@ public class DBUtil extends SQLiteOpenHelper {
         String selection = USER_COLUMN_ID + " = ?";
         String[] selectionArgs = {String.valueOf(id)};
         Cursor cursor = db.query(TABLE_USER, columns, selection, selectionArgs, null, null, null);
-
         User user = null;
-
         if (cursor.moveToFirst()) {
             int idColumnIndex = cursor.getColumnIndex(USER_COLUMN_ID);
             int usernameColumnIndex = cursor.getColumnIndex(USER_COLUMN_USERNAME);
             int emailColumnIndex = cursor.getColumnIndex(USER_COLUMN_EMAIL);
             int passwordColumnIndex = cursor.getColumnIndex(USER_COLUMN_PASSWORD);
-
             if (idColumnIndex >= 0 && usernameColumnIndex >= 0 && emailColumnIndex >= 0 && passwordColumnIndex >= 0) {
                 int userId = cursor.getInt(idColumnIndex);
                 String username = cursor.getString(usernameColumnIndex);
@@ -174,56 +177,98 @@ public class DBUtil extends SQLiteOpenHelper {
                 user = new User(userId, username, email, password);
             }
         }
-
         cursor.close();
         return user;
     }
 
 
     // StudyRoom table methods
-    public List<String> getBuilding() {
+
+    /**
+     * Add all study rooms to the study room table
+     *
+     * @param studyRooms The list of study rooms to add
+     * @return The number of successful inserts
+     */
+    public int insertStudyRooms(List<StudyRoom> studyRooms) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int successfulInserts = 0;
+
+        try {
+            db.beginTransaction();
+
+            for (StudyRoom studyRoom : studyRooms) {
+                ContentValues contentValues = new ContentValues();
+                contentValues.put(ROOM_COLUMN_NAME, studyRoom.getRoom());
+                contentValues.put(ROOM_COLUMN_BUILDING, studyRoom.getBuilding());
+                contentValues.put(ROOM_COLUMN_MORNING_AVAILABILITY, studyRoom.getMorningAvailability());
+                contentValues.put(ROOM_COLUMN_AFTERNOON_AVAILABILITY, studyRoom.getAfternoonAvailability());
+                contentValues.put(ROOM_COLUMN_EVENING_AVAILABILITY, studyRoom.getEveningAvailability());
+                long result = db.insert(TABLE_STUDY_ROOM, null, contentValues);
+                if (result != -1) {
+                    successfulInserts++;
+                }
+            }
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+        db.close();
+        return successfulInserts;
+    }
+
+    /**
+     * Get all buildings in the study room table
+     *
+     * @return The list of buildings
+     */
+    public String[] getAllBuildings() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(true, TABLE_STUDY_ROOM, new String[]{ROOM_COLUMN_BUILDING}, null, null, null, null, null, null);
+
         List<String> buildingList = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
-        // Specify the result column (projection)
-        String[] projection = {ROOM_COLUMN_BUILDING};
-        // Query the database
-        Cursor cursor = db.query(TABLE_STUDY_ROOM, projection, null, null, null, null, null);
-        // Add the building values to the list
-        if (cursor.moveToFirst()) {
-            do {
-                buildingList.add(cursor.getString(0));
-            } while (cursor.moveToNext());
-        }
-        // Close the cursor and database
-        cursor.close();
-        db.close();
-        return buildingList;
-    }
+        int buildingColumnIndex = cursor.getColumnIndex(ROOM_COLUMN_BUILDING);
 
-    public List<String> getRoomsByBuilding(String buildingSelected) {
-        List<String> roomList = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
-        // Specify the result column (projection)
-        String[] projection = {ROOM_COLUMN_NAME};
-        // Add the selection condition (buildingSelected)
-        String selection = ROOM_COLUMN_BUILDING + " = ?";
-        String[] selectionArgs = {buildingSelected};
-        // Query the database
-        Cursor cursor = db.query(TABLE_STUDY_ROOM, projection, selection, selectionArgs, null, null, null);
-        // Add the room names to the list
-        if (cursor.moveToFirst()) {
+        if (buildingColumnIndex >= 0 && cursor.moveToFirst()) {
             do {
-                roomList.add(cursor.getString(0));
+                String building = cursor.getString(buildingColumnIndex);
+                if (building != null && !building.isEmpty()) {
+                    buildingList.add(building);
+                }
             } while (cursor.moveToNext());
         }
-        // Close the cursor and database
+
         cursor.close();
         db.close();
-        return roomList;
+
+        return buildingList.toArray(new String[0]);
     }
 
 
+    // StudyTime table methods
 
+    /**
+     * Get the user's study time count
+     *
+     * @param userId The user ID
+     * @return The user's study time count
+     */
+    public int gerUserStudyCount(int userId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] columns = {"COUNT(*)"};
+        String selection = TIME_COLUMN_USER_ID + " = ?";
+        String[] selectionArgs = {String.valueOf(userId)};
+        Cursor cursor = db.query(TABLE_STUDY_TIME, columns, selection, selectionArgs, null, null, null);
+        int count = 0;
+        if (cursor.moveToFirst()) {
+            int columnIndex = cursor.getColumnIndex("COUNT(*)");
+            if (columnIndex >= 0) {
+                count = cursor.getInt(columnIndex);
+            }
+        }
+        cursor.close();
+        return count;
+    }
 
 
 }

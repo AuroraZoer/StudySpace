@@ -20,11 +20,23 @@
                 android:id="@+id/info_button"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_gravity="end"
-                android:layout_marginRight="10dp"
+                android:layout_gravity="start"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="5dp"
                 android:background="@android:color/transparent"
-                android:src="@drawable/baseline_info_24"/>
+                android:src="@drawable/baseline_info_24"
+                android:contentDescription="@string/info" />
+
+            <ImageButton
+                android:id="@+id/logout_button"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="end"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="5dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/baseline_logout_24"
+                android:contentDescription="@string/logout" />
 
         </FrameLayout>
 
@@ -32,6 +44,7 @@
             android:id="@+id/profile_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:fontFamily="@font/baloo_bhaina"
             android:gravity="center_horizontal"
             android:text="@string/profile"
@@ -54,7 +67,7 @@
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
             android:gravity="center"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
             app:cardCornerRadius="15dp"
             app:cardElevation="8dp">
 
@@ -80,6 +93,7 @@
                         android:textSize="24sp" />
 
                     <TextView
+                        android:id="@+id/profile_data_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/baloo_bhaina"
@@ -107,6 +121,7 @@
                         android:textSize="24sp" />
 
                     <TextView
+                        android:id="@+id/profile_data_duration"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/baloo_bhaina"
