@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -243,6 +242,48 @@ public class DBUtil extends SQLiteOpenHelper {
 
         return buildingList.toArray(new String[0]);
     }
+
+
+    public int getTotalRoomCount(String building, String timeOfDay) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selection = ROOM_COLUMN_BUILDING + " = ? AND " + timeOfDay + " = 1";
+        String[] selectionArgs = {building};
+
+        Cursor cursor = db.query(TABLE_STUDY_ROOM, null, selection, selectionArgs, null, null, null);
+
+        int roomCount = cursor.getCount();
+        cursor.close();
+        db.close();
+
+        return roomCount;
+    }
+
+
+    public List<String> getAvailableRooms(String building, String timeOfDay) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] projection = {ROOM_COLUMN_NAME};
+        String selection = ROOM_COLUMN_BUILDING + " = ? AND " + timeOfDay + " = 1";
+        String[] selectionArgs = {building};
+
+        Cursor cursor = db.query(TABLE_STUDY_ROOM, projection, selection, selectionArgs, null, null, null);
+
+        List<String> availableRooms = new ArrayList<>();
+        if (cursor.moveToFirst()) {
+            int roomNameIndex = cursor.getColumnIndex(ROOM_COLUMN_NAME);
+            if (roomNameIndex >= 0) {
+                do {
+                    String roomName = cursor.getString(roomNameIndex);
+                    availableRooms.add(roomName);
+                } while (cursor.moveToNext());
+            }
+        }
+
+        cursor.close();
+        db.close();
+
+        return availableRooms;
+    }
+
 
 
     // StudyTime table methods

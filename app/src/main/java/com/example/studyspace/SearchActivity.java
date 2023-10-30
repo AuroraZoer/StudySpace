@@ -4,8 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
@@ -23,6 +21,7 @@ public class SearchActivity extends AppCompatActivity {
     private static final String TAG = "SearchActivity";
     DBUtil databaseHelper;
     int userId;
+    String timeOfDay;
     TextView availability;
     AutoCompleteTextView autoCompleteTextView;
     String[] buildings;
@@ -81,9 +80,9 @@ public class SearchActivity extends AppCompatActivity {
     @SuppressLint("SetTextI18n")
     private String getAvailability() {
         Date currentDate = new Date();
+        Log.d(TAG, "Current Date: " + currentDate);
         SimpleDateFormat dateFormat = new SimpleDateFormat("HH");
         String currentHour = dateFormat.format(currentDate);
-        String timeOfDay;
         if (currentHour.compareTo("12") < 0) {
             timeOfDay = "MorningAvailability";
             availability.setText("Good Morning!");
