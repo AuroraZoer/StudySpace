@@ -7,8 +7,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.studyspace.database.DBUtil;
-import com.example.studyspace.database.User;
+import com.example.studyspace.Database.DBUtil;
+import com.example.studyspace.Database.User;
 import com.example.studyspace.databinding.ActivityRegisterBinding;
 
 public class RegisterActivity extends AppCompatActivity {

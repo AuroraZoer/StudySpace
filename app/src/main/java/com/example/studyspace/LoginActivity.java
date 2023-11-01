@@ -7,7 +7,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.studyspace.database.DBUtil;
+import com.example.studyspace.Database.DBUtil;
 import com.example.studyspace.databinding.ActivityLoginBinding;
 
 public class LoginActivity extends AppCompatActivity {

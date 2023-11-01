@@ -1,4 +1,4 @@
-package com.example.studyspace.database;
+package com.example.studyspace.Database;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -243,45 +243,41 @@ public class DBUtil extends SQLiteOpenHelper {
         return buildingList.toArray(new String[0]);
     }
 
-
-    public int getTotalRoomCount(String building, String timeOfDay) {
+    public int getAvailableClassroomNumber(String building, String timeOfDay) {
         SQLiteDatabase db = this.getReadableDatabase();
         String selection = ROOM_COLUMN_BUILDING + " = ? AND " + timeOfDay + " = 1";
         String[] selectionArgs = {building};
 
         Cursor cursor = db.query(TABLE_STUDY_ROOM, null, selection, selectionArgs, null, null, null);
+        int totalClassroomCount = cursor.getCount();
 
-        int roomCount = cursor.getCount();
         cursor.close();
         db.close();
 
-        return roomCount;
+        return totalClassroomCount;
     }
 
-
-    public List<String> getAvailableRooms(String building, String timeOfDay) {
+    // 这个返回的是一个String，是一个building里面所有的available的room的name
+    public String getAvailableClassrooms(String building, String timeOfDay) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String[] projection = {ROOM_COLUMN_NAME};
+        String[] columns = {ROOM_COLUMN_NAME};
         String selection = ROOM_COLUMN_BUILDING + " = ? AND " + timeOfDay + " = 1";
         String[] selectionArgs = {building};
-
-        Cursor cursor = db.query(TABLE_STUDY_ROOM, projection, selection, selectionArgs, null, null, null);
-
-        List<String> availableRooms = new ArrayList<>();
+        Cursor cursor = db.query(TABLE_STUDY_ROOM, columns, selection, selectionArgs, null, null, null);
+        StringBuilder availableClassrooms = new StringBuilder();
         if (cursor.moveToFirst()) {
-            int roomNameIndex = cursor.getColumnIndex(ROOM_COLUMN_NAME);
-            if (roomNameIndex >= 0) {
+            int columnIndex = cursor.getColumnIndex(ROOM_COLUMN_NAME);
+            if (columnIndex >= 0) {
                 do {
-                    String roomName = cursor.getString(roomNameIndex);
-                    availableRooms.add(roomName);
+                    String room = cursor.getString(columnIndex);
+                    if (room != null && !room.isEmpty()) {
+                        availableClassrooms.append(room).append("\n");
+                    }
                 } while (cursor.moveToNext());
             }
         }
-
         cursor.close();
-        db.close();
-
-        return availableRooms;
+        return availableClassrooms.toString();
     }
 
 

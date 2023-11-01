@@ -1,4 +1,4 @@
-package com.example.studyspace.database;
+package com.example.studyspace.Database;
 
 public class StudyTime {
     private int timeID;

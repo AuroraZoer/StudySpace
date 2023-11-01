@@ -27,7 +27,9 @@
     <string name="zyr">Yiran Zhao</string>
     <string name="ucd">UCD number 21207295</string>
     <string name="bjut">BJUT number 21372120</string>
-    <string name="available_rooms">Available Classroom</string>
+    <string name="available_classroom">Available Classroom</string>
+    <string name="building_1">Building 1</string>
+    <string name="building_2">Building 2</string>
 
 
 </resources>

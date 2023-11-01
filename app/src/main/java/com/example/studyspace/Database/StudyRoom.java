@@ -1,4 +1,4 @@
-package com.example.studyspace.database;
+package com.example.studyspace.Database;
 
 public class StudyRoom {
     private int roomID;

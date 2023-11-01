@@ -9,8 +9,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.studyspace.database.DBUtil;
-import com.example.studyspace.database.StudyRoom;
+import com.example.studyspace.Database.DBUtil;
+import com.example.studyspace.Database.StudyRoom;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.example.studyspace.database.DBUtil;
+import com.example.studyspace.Database.DBUtil;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class AnalyseActivity extends AppCompatActivity {
