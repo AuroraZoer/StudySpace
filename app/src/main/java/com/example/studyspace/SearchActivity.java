@@ -4,8 +4,10 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,16 +18,18 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class SearchActivity extends AppCompatActivity {
     private static final String TAG = "SearchActivity";
     DBUtil databaseHelper;
     int userId;
-    String timeOfDay;
+    String timeOfDay, selectedBuilding;
     TextView availability, building_1, building_2, available_classroom_1, available_classroom_2;
     AutoCompleteTextView autoCompleteTextView;
     String[] buildings;
     ArrayAdapter<String> adapterItems;
+    Button searchButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +37,17 @@ public class SearchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search);
         bottomNavigationViewInit();
         initSearch();
+        searchButton.setOnClickListener(view -> {
+            if (selectedBuilding != null && !selectedBuilding.isEmpty()) {
+                Intent intent = new Intent(getApplicationContext(), RoomActivity.class);
+                intent.putExtra("user_id", userId);
+                intent.putExtra("building", selectedBuilding);
+                intent.putExtra("time_of_day", timeOfDay);
+                startActivity(intent);
+            } else {
+                Toast.makeText(SearchActivity.this, "Please select a building", Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 
@@ -47,11 +62,11 @@ public class SearchActivity extends AppCompatActivity {
         adapterItems = new ArrayAdapter<>(this, R.layout.list_item, buildings);
         autoCompleteTextView.setAdapter(adapterItems);
         autoCompleteTextView.setOnItemClickListener((adapterView, view, i, l) -> {
-            String building = adapterView.getItemAtPosition(i).toString();
-            Log.d(TAG, "Building: " + building);
-            Toast.makeText(SearchActivity.this, building, Toast.LENGTH_SHORT).show();
-            
+            selectedBuilding = adapterView.getItemAtPosition(i).toString();
+            Log.d(TAG, "Building: " + selectedBuilding);
+            Toast.makeText(SearchActivity.this, selectedBuilding, Toast.LENGTH_SHORT).show();
         });
+        searchButton = findViewById(R.id.search_button);
         building_1 = findViewById(R.id.building_1);
         building_2 = findViewById(R.id.building_2);
         available_classroom_1 = findViewById(R.id.available_classroom_1);
@@ -62,8 +77,6 @@ public class SearchActivity extends AppCompatActivity {
         available_classroom_2.setText(String.valueOf(databaseHelper.getAvailableClassroomNumber(buildings[1], timeOfDay)));
         Log.d(TAG, buildings[0] + "\t" + databaseHelper.getAvailableClassroomNumber(buildings[0], timeOfDay));
         Log.d(TAG, buildings[1] + "\t" + databaseHelper.getAvailableClassroomNumber(buildings[1], timeOfDay));
-
-
     }
 
     private void bottomNavigationViewInit() {

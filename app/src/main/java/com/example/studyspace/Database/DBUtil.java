@@ -243,6 +243,13 @@ public class DBUtil extends SQLiteOpenHelper {
         return buildingList.toArray(new String[0]);
     }
 
+    /**
+     * Get the number of available classrooms in the building at the specified time of day
+     *
+     * @param building  The building
+     * @param timeOfDay The time of day
+     * @return The number of available classrooms
+     */
     public int getAvailableClassroomNumber(String building, String timeOfDay) {
         SQLiteDatabase db = this.getReadableDatabase();
         String selection = ROOM_COLUMN_BUILDING + " = ? AND " + timeOfDay + " = 1";
@@ -257,29 +264,37 @@ public class DBUtil extends SQLiteOpenHelper {
         return totalClassroomCount;
     }
 
-    // 这个返回的是一个String，是一个building里面所有的available的room的name
-    public String getAvailableClassrooms(String building, String timeOfDay) {
+    /**
+     * Get all available classrooms in the building at the specified time of day
+     *
+     * @param building  The building
+     * @param timeOfDay The time of day
+     * @return The list of available classrooms
+     */
+    public List<String> getAvailableClassrooms(String building, String timeOfDay) {
         SQLiteDatabase db = this.getReadableDatabase();
         String[] columns = {ROOM_COLUMN_NAME};
         String selection = ROOM_COLUMN_BUILDING + " = ? AND " + timeOfDay + " = 1";
         String[] selectionArgs = {building};
         Cursor cursor = db.query(TABLE_STUDY_ROOM, columns, selection, selectionArgs, null, null, null);
-        StringBuilder availableClassrooms = new StringBuilder();
+
+        List<String> availableClassrooms = new ArrayList<>();
+
         if (cursor.moveToFirst()) {
             int columnIndex = cursor.getColumnIndex(ROOM_COLUMN_NAME);
             if (columnIndex >= 0) {
                 do {
                     String room = cursor.getString(columnIndex);
                     if (room != null && !room.isEmpty()) {
-                        availableClassrooms.append(room).append("\n");
+                        availableClassrooms.add(room);
                     }
                 } while (cursor.moveToNext());
             }
         }
-        cursor.close();
-        return availableClassrooms.toString();
-    }
 
+        cursor.close();
+        return availableClassrooms;
+    }
 
 
     // StudyTime table methods
