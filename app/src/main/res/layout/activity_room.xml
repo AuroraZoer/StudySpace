@@ -42,6 +42,7 @@
                 android:id="@+id/title_building"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:translationY="10dp"
                 android:fontFamily="@font/baloo_bhaina"
                 android:text="@string/building_1"
                 android:textAlignment="center"
@@ -59,10 +60,38 @@
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_room"
             android:layout_width="match_parent"
             android:layout_height="350dp"
-            android:layout_marginTop="170dp"
-            android:background="@color/lightBlack" />
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="175dp"
+            android:layout_marginEnd="20dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="520dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/baloo_bhaina"
+                android:translationY="8dp"
+                android:text="Click a classroom,"
+                android:textAlignment="center"
+                android:textColor="@color/primary"
+                android:textSize="26sp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/baloo_bhaina"
+                android:text="start studying now!"
+                android:textAlignment="center"
+                android:textColor="@color/primary"
+                android:textSize="26sp" />
+
+        </LinearLayout>
 
         <com.airbnb.lottie.LottieAnimationView
             android:layout_width="wrap_content"

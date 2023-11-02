@@ -8,6 +8,9 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import com.example.studyspace.Adapter.RoomsAdapter;
 import com.example.studyspace.Database.DBUtil;
 
 import java.util.List;
@@ -26,7 +29,6 @@ public class RoomActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room);
         initRoom();
-
     }
 
     private void initRoom() {
@@ -47,9 +49,11 @@ public class RoomActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
         building = findViewById(R.id.title_building);
         building.setText(selectedBuilding);
-
         availableRooms = databaseHelper.getAvailableClassrooms(selectedBuilding, timeOfDay);
         Log.d(TAG, selectedBuilding + ": " + availableRooms);
+        RecyclerView recyclerView = findViewById(R.id.recycler_room);
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 2)); // 2 columns
+        recyclerView.setAdapter(new RoomsAdapter(availableRooms, this));
     }
 
     @Override
