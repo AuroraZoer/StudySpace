@@ -31,7 +31,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 if (emailText.equals("") || passwordText.equals("")) {
                     // Check if the user has entered all the fields
-                    Toast.makeText(LoginActivity.this, "Please enter all the fields", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Please fill in all the fields", Toast.LENGTH_SHORT).show();
                 } else {
                     // Check if the email and password match
                     if (databaseHelper.checkEmailPassword(emailText, passwordText)) {

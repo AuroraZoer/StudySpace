@@ -33,7 +33,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                                                        if (emailText.equals("") || passwordText.equals("") || usernameText.equals("")) {
                                                            // Check if any of the fields are empty
-                                                           Toast.makeText(RegisterActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+                                                           Toast.makeText(RegisterActivity.this, "Please fill in all the fields", Toast.LENGTH_SHORT).show();
                                                        } else {
                                                            // Check if email already exists
                                                            if (databaseHelper.checkEmailExist(emailText)){
