@@ -17,11 +17,11 @@ import java.util.List;
 public class RoomActivity extends AppCompatActivity {
     private static final String TAG = "RoomActivity";
     DBUtil databaseHelper;
+    ToolbarFragment toolbarFragment;
     int userId;
     String timeOfDay, selectedBuilding;
     TextView building;
     List<String> availableRooms;
-    ToolbarFragment toolbarFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +53,7 @@ public class RoomActivity extends AppCompatActivity {
         Log.d(TAG, selectedBuilding + ": " + availableRooms);
         RecyclerView recyclerView = findViewById(R.id.recycler_room);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2)); // 2 columns
-        recyclerView.setAdapter(new RoomsAdapter(availableRooms, this, selectedBuilding));
+        recyclerView.setAdapter(new RoomsAdapter(availableRooms, this, selectedBuilding, userId));
     }
 
     @Override

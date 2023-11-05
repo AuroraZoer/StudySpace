@@ -296,6 +296,35 @@ public class DBUtil extends SQLiteOpenHelper {
         return availableClassrooms;
     }
 
+    /**
+     * Get the RoomID for a specific building and room.
+     *
+     * @param building The building
+     * @param room     The room
+     * @return The RoomID if found, or -1 if not found.
+     */
+    public int getRoomID(String building, String room) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] columns = {ROOM_COLUMN_ID};
+        String selection = ROOM_COLUMN_BUILDING + " = ? AND " + ROOM_COLUMN_NAME + " = ?";
+        String[] selectionArgs = {building, room};
+        Cursor cursor = db.query(TABLE_STUDY_ROOM, columns, selection, selectionArgs, null, null, null);
+
+        int roomID = -1;
+
+        if (cursor.moveToFirst()) {
+            int columnIndex = cursor.getColumnIndex(ROOM_COLUMN_ID);
+            if (columnIndex >= 0) {
+                roomID = cursor.getInt(columnIndex);
+            }
+        }
+
+        cursor.close();
+        db.close();
+
+        return roomID;
+    }
+
 
     // StudyTime table methods
 
@@ -321,6 +350,28 @@ public class DBUtil extends SQLiteOpenHelper {
         cursor.close();
         return count;
     }
+
+    /**
+     * Insert a new study time into the StudyTime table.
+     *
+     * @param userID    The ID of the user associated with the study time.
+     * @param roomID    The ID of the room where the study time takes place.
+     * @param startTime The start time of the study session.
+     * @param endTime   The end time of the study session.
+     * @return True if the insertion was successful, false otherwise.
+     */
+    public boolean addStudyTime(int userID, int roomID, String startTime, String endTime) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(TIME_COLUMN_USER_ID, userID);
+        contentValues.put(TIME_COLUMN_ROOM_ID, roomID);
+        contentValues.put(TIME_COLUMN_START_TIME, startTime);
+        contentValues.put(TIME_COLUMN_END_TIME, endTime);
+        long result = db.insert(TABLE_STUDY_TIME, null, contentValues);
+        db.close();
+        return result != -1;
+    }
+
 
 
 }

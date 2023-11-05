@@ -62,7 +62,7 @@ public class SearchActivity extends AppCompatActivity {
         autoCompleteTextView.setOnItemClickListener((adapterView, view, i, l) -> {
             selectedBuilding = adapterView.getItemAtPosition(i).toString();
             Log.d(TAG, "Building: " + selectedBuilding);
-            Toast.makeText(SearchActivity.this, selectedBuilding, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(SearchActivity.this, selectedBuilding, Toast.LENGTH_SHORT).show();
         });
         searchButton = findViewById(R.id.search_button);
         building_1 = findViewById(R.id.building_1);
