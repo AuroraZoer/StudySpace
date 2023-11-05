@@ -57,7 +57,7 @@ public class SearchActivity extends AppCompatActivity {
         Log.d(TAG, "User ID: " + userId);
         autoCompleteTextView = findViewById(R.id.search_building_text);
         buildings = databaseHelper.getAllBuildings();
-        adapterItems = new ArrayAdapter<>(this, R.layout.list_item, buildings);
+        adapterItems = new ArrayAdapter<>(this, R.layout.building_list_item, buildings);
         autoCompleteTextView.setAdapter(adapterItems);
         autoCompleteTextView.setOnItemClickListener((adapterView, view, i, l) -> {
             selectedBuilding = adapterView.getItemAtPosition(i).toString();

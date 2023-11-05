@@ -11,26 +11,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+        <FrameLayout
+            android:id="@+id/toolbar_fragment"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/primary"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:layout_scrollFlags="scroll|enterAlways"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:fontFamily="@font/baloo_bhaina"
-                android:padding="0dp"
-                android:text="@string/app_name"
-                android:textColor="@color/white"
-                android:textSize="26sp" />
-
-        </androidx.appcompat.widget.Toolbar>
+            android:layout_height="?attr/actionBarSize" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -78,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/baloo_bhaina"
                 android:translationY="8dp"
-                android:text="Click a classroom,"
+                android:text="@string/click_a_classroom"
                 android:textAlignment="center"
                 android:textColor="@color/primary"
                 android:textSize="26sp" />
@@ -86,7 +70,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/baloo_bhaina"
-                android:text="start studying now!"
+                android:text="@string/start_studying_now"
                 android:textAlignment="center"
                 android:textColor="@color/primary"
                 android:textSize="26sp" />
