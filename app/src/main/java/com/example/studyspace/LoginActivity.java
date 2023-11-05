@@ -2,7 +2,6 @@ package com.example.studyspace;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,42 +21,36 @@ public class LoginActivity extends AppCompatActivity {
 
         databaseHelper = new DBUtil(this);
 
-        binding.btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Input password, email
-                String emailText = binding.email.getText().toString();
-                String passwordText = binding.password.getText().toString();
+        binding.btnLogin.setOnClickListener(view -> {
+            // Input password, email
+            String emailText = binding.email.getText().toString();
+            String passwordText = binding.password.getText().toString();
 
-                if (emailText.equals("") || passwordText.equals("")) {
-                    // Check if the user has entered all the fields
-                    Toast.makeText(LoginActivity.this, "Please fill in all the fields", Toast.LENGTH_SHORT).show();
-                } else {
-                    // Check if the email and password match
-                    if (databaseHelper.checkEmailPassword(emailText, passwordText)) {
-                        int userId = databaseHelper.getUserIdIfLoginSuccessful(emailText, passwordText);
-                        if (userId != -1) {
-                            Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(LoginActivity.this, SearchActivity.class);
-                            intent.putExtra("user_id", userId);
-                            startActivity(intent);
-                        } else {
-                            Toast.makeText(LoginActivity.this, "User ID not found.", Toast.LENGTH_SHORT).show();
-                        }
+            if (emailText.equals("") || passwordText.equals("")) {
+                // Check if the user has entered all the fields
+                Toast.makeText(LoginActivity.this, "Please fill in all the fields", Toast.LENGTH_SHORT).show();
+            } else {
+                // Check if the email and password match
+                if (databaseHelper.checkEmailPassword(emailText, passwordText)) {
+                    int userId = databaseHelper.getUserIdIfLoginSuccessful(emailText, passwordText);
+                    if (userId != -1) {
+                        Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(LoginActivity.this, SearchActivity.class);
+                        intent.putExtra("user_id", userId);
+                        startActivity(intent);
                     } else {
-                        Toast.makeText(LoginActivity.this, "Incorrect email or password.\nPlease try again.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "User ID not found.", Toast.LENGTH_SHORT).show();
                     }
+                } else {
+                    Toast.makeText(LoginActivity.this, "Incorrect email or password.\nPlease try again.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
 
-        binding.btnRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class); // this is the intent to go to the register page
-                startActivities(new Intent[]{intent});
-            }
+        binding.btnRegister.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class); // this is the intent to go to the register page
+            startActivities(new Intent[]{intent});
         });
 
     }

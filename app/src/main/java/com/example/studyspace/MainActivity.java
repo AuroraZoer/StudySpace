@@ -1,13 +1,12 @@
 package com.example.studyspace;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.studyspace.Database.DBUtil;
 import com.example.studyspace.Database.StudyRoom;
@@ -101,27 +100,21 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class); // this is the intent to go to the login page
-                startActivities(new Intent[]{intent});
-            }
+        loginButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class); // this is the intent to go to the login page
+            startActivities(new Intent[]{intent});
         });
 
-        registerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, RegisterActivity.class); // this is the intent to go to the register page
-                startActivities(new Intent[]{intent});
-            }
+        registerButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, RegisterActivity.class); // this is the intent to go to the register page
+            startActivities(new Intent[]{intent});
         });
 
     }
 
     private void initApp() {
         databaseHelper = new DBUtil(this);
-        loginButton = (Button) findViewById(R.id.btn_login);
-        registerButton = (Button) findViewById(R.id.btn_register);
+        loginButton = findViewById(R.id.btn_login);
+        registerButton = findViewById(R.id.btn_register);
     }
 }

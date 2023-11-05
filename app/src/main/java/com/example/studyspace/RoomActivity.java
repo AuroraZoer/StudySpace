@@ -14,6 +14,7 @@ import com.example.studyspace.Adapter.RoomsAdapter;
 import com.example.studyspace.Database.DBUtil;
 
 import java.util.List;
+import java.util.Objects;
 
 public class RoomActivity extends AppCompatActivity {
     private static final String TAG = "RoomActivity";
@@ -41,7 +42,7 @@ public class RoomActivity extends AppCompatActivity {
         Log.d(TAG, "Building: " + selectedBuilding);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("");
+        Objects.requireNonNull(getSupportActionBar()).setTitle("");
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -53,7 +54,7 @@ public class RoomActivity extends AppCompatActivity {
         Log.d(TAG, selectedBuilding + ": " + availableRooms);
         RecyclerView recyclerView = findViewById(R.id.recycler_room);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2)); // 2 columns
-        recyclerView.setAdapter(new RoomsAdapter(availableRooms, this));
+        recyclerView.setAdapter(new RoomsAdapter(availableRooms, this, selectedBuilding));
     }
 
     @Override

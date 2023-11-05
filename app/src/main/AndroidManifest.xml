@@ -13,13 +13,18 @@
         android:theme="@style/Theme.StudySpace"
         tools:targetApi="31">
         <activity
+            android:name=".TimeActivity"
+            android:exported="false" />
+        <activity
             android:name=".RoomActivity"
-            android:exported="true" >
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
+            android:exported="true">
 
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity
             android:name=".SplashScreen"

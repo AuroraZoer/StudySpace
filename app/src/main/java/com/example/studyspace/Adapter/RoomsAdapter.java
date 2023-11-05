@@ -1,31 +1,41 @@
 package com.example.studyspace.Adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.studyspace.R;
+import com.example.studyspace.TimeActivity;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.ViewHolder> {
-    private List<String> rooms;
-    private Context context;
+    private final List<String> rooms;
+    private final Context context;
+    private final String building;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView roomName;
+
         public ViewHolder(View view) {
             super(view);
             roomName = view.findViewById(R.id.room_name);
         }
     }
 
-    public RoomsAdapter(List<String> rooms, Context context) {
+    public RoomsAdapter(List<String> rooms, Context context, String building) {
         this.rooms = rooms;
         this.context = context;
+        this.building = building;
     }
 
 
@@ -37,14 +47,16 @@ public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.ViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.roomName.setText(rooms.get(position));
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // 在这里处理点击事件，比如跳转到新的界面
-            }
+        holder.itemView.setOnClickListener(view -> {
+            // When a room is clicked, go to the TimeActivity
+            Intent intent = new Intent(context, TimeActivity.class);
+            intent.putExtra("room", rooms.get(position));
+            intent.putExtra("building", building);
+            Log.d("RoomAdapter", building + ": " + rooms.get(position));
+            context.startActivity(intent);
         });
     }
 

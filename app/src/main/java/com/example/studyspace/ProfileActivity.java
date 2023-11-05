@@ -13,6 +13,8 @@ import com.example.studyspace.Database.DBUtil;
 import com.example.studyspace.Database.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.Objects;
+
 public class ProfileActivity extends AppCompatActivity {
     private static final String TAG = "ProfileActivity";
     DBUtil databaseHelper;
@@ -66,7 +68,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void showInfoDialog() {
         dialog.setContentView(R.layout.info_popup);
-        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawableResource(android.R.color.transparent);
         dialog.show();
     }
 
