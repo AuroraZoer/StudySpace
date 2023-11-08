@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.example.studyspace.Database.DBUtil;
 
@@ -13,6 +14,7 @@ public class TimeActivity extends AppCompatActivity {
     ToolbarFragment toolbarFragment;
     String selectedBuilding, selectedRoom;
     int userId, roomId;
+    TextView building, classroom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,11 @@ public class TimeActivity extends AppCompatActivity {
         toolbarFragment = new ToolbarFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.toolbar_fragment, toolbarFragment).commit();
 
+        // Set up building and classroom text view
+        building = findViewById(R.id.clock_title_building);
+        building.setText(selectedBuilding);
+        classroom = findViewById(R.id.clock_title_classroom);
+        classroom.setText(selectedRoom);
 
     }
 }
