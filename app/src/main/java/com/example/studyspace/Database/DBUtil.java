@@ -34,8 +34,7 @@ public class DBUtil extends SQLiteOpenHelper {
     private static final String TIME_COLUMN_ID = "TimeID";
     private static final String TIME_COLUMN_USER_ID = "UserID";
     private static final String TIME_COLUMN_ROOM_ID = "RoomID";
-    private static final String TIME_COLUMN_START_TIME = "StartTime";
-    private static final String TIME_COLUMN_END_TIME = "EndTime";
+    private static final String TIME_COLUMN_TIME = "Time";
 
     public DBUtil(Context context) {
         super(context, databaseName, null, databaseVersion);
@@ -66,8 +65,7 @@ public class DBUtil extends SQLiteOpenHelper {
                 TIME_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 TIME_COLUMN_USER_ID + " INTEGER, " +
                 TIME_COLUMN_ROOM_ID + " INTEGER, " +
-                TIME_COLUMN_START_TIME + " TEXT, " +
-                TIME_COLUMN_END_TIME + " TEXT, " +
+                TIME_COLUMN_TIME + " TEXT, " +
                 "FOREIGN KEY(" + TIME_COLUMN_USER_ID + ") REFERENCES " + TABLE_USER + "(" + USER_COLUMN_ID + "), " +
                 "FOREIGN KEY(" + TIME_COLUMN_ROOM_ID + ") REFERENCES " + TABLE_STUDY_ROOM + "(" + ROOM_COLUMN_ID + "));";
         db.execSQL(createStudyTimeTable);
@@ -356,17 +354,15 @@ public class DBUtil extends SQLiteOpenHelper {
      *
      * @param userID    The ID of the user associated with the study time.
      * @param roomID    The ID of the room where the study time takes place.
-     * @param startTime The start time of the study session.
-     * @param endTime   The end time of the study session.
+     * @param time The time of the study session.
      * @return True if the insertion was successful, false otherwise.
      */
-    public boolean addStudyTime(int userID, int roomID, String startTime, String endTime) {
+    public boolean addStudyTime(int userID, int roomID, String time) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(TIME_COLUMN_USER_ID, userID);
         contentValues.put(TIME_COLUMN_ROOM_ID, roomID);
-        contentValues.put(TIME_COLUMN_START_TIME, startTime);
-        contentValues.put(TIME_COLUMN_END_TIME, endTime);
+        contentValues.put(TIME_COLUMN_TIME, time);
         long result = db.insert(TABLE_STUDY_TIME, null, contentValues);
         db.close();
         return result != -1;

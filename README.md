@@ -28,8 +28,7 @@ StudyRoom {
 
 StudyTime {
     INTEGER TimeID PK
-    TEXT StartTime
-    TEXT EndTime
+    TEXT Time
     INTEGER UserID FK
     INTEGER RoomID FK
 }

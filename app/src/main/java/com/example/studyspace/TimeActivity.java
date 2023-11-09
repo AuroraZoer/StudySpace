@@ -1,16 +1,15 @@
 package com.example.studyspace;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.res.ResourcesCompat;
-
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.example.studyspace.Database.DBUtil;
 
@@ -65,11 +64,19 @@ public class TimeActivity extends AppCompatActivity {
                 stop.setEnabled(false);
                 String time = formatChronometerTime(pauseOffset);
                 timeRecord.setText("Time recorded  " + time);
-//                    databaseHelper.addTime(userId, roomId, time);
+                databaseHelper.addStudyTime(userId, roomId, time);
+                boolean insertSuccessful = databaseHelper.addStudyTime(userId, roomId, time);
+                if (insertSuccessful) {
+                    Log.d(TAG, "Data insert successful " + time);
+                } else {
+                    Log.d(TAG, "Data insert failed");
+                }
+                chronometer.setBase(SystemClock.elapsedRealtime());
+                pauseOffset = 0;
+                chronometer.setText("00:00:00");
             }
         });
-
-
+        
     }
 
     private void initTime() {
