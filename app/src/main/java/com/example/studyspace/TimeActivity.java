@@ -5,6 +5,7 @@ import androidx.core.content.res.ResourcesCompat;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -35,32 +36,36 @@ public class TimeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_time);
         initTime();
 
-        start.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!isRunning) {
-                    chronometer.setBase(System.currentTimeMillis() - pauseOffset);
-                    chronometer.start();
-                    isRunning = true;
-                    start.setEnabled(false);
-                    stop.setEnabled(true);
-                }
+        chronometer.setOnChronometerTickListener(chronometer -> {
+            long elapsedMillis = SystemClock.elapsedRealtime() - chronometer.getBase();
+            int hours = (int) (elapsedMillis / 3600000);
+            int minutes = (int) (elapsedMillis - hours * 3600000) / 60000;
+            int seconds = (int) (elapsedMillis / 1000) % 60;
+            String text = String.format(Locale.getDefault(), "%02d:%02d:%02d", hours, minutes, seconds);
+            chronometer.setText(text);
+        });
+
+
+        start.setOnClickListener(view -> {
+            if (!isRunning) {
+                chronometer.setBase(SystemClock.elapsedRealtime() - pauseOffset);
+                chronometer.start();
+                isRunning = true;
+                start.setEnabled(false);
+                stop.setEnabled(true);
             }
         });
 
-        stop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (isRunning) {
-                    chronometer.stop();
-                    pauseOffset = System.currentTimeMillis() - chronometer.getBase();
-                    isRunning = false;
-                    start.setEnabled(true);
-                    stop.setEnabled(false);
-                    String time = formatChronometerTime(pauseOffset);
-                    timeRecord.setText("Time recorded  " + time);
+        stop.setOnClickListener(view -> {
+            if (isRunning) {
+                chronometer.stop();
+                pauseOffset = SystemClock.elapsedRealtime() - chronometer.getBase();
+                isRunning = false;
+                start.setEnabled(true);
+                stop.setEnabled(false);
+                String time = formatChronometerTime(pauseOffset);
+                timeRecord.setText("Time recorded  " + time);
 //                    databaseHelper.addTime(userId, roomId, time);
-                }
             }
         });
 
@@ -93,6 +98,8 @@ public class TimeActivity extends AppCompatActivity {
         chronometer = findViewById(R.id.chronometer);
         typeface = ResourcesCompat.getFont(this, R.font.baloo_bhaina);
         chronometer.setTypeface(typeface);
+        // Set the initial text to 00:00:00
+        chronometer.setText("00:00:00");
 
         // Set up start and stop buttons
         start = findViewById(R.id.btn_start);

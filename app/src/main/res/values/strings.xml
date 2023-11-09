@@ -30,10 +30,14 @@
     <string name="available_classroom">Available Classroom</string>
     <string name="building_1">Building 1</string>
     <string name="building_2">Building 2</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
     <string name="click_a_classroom">Click a classroom,</string>
     <string name="start_studying_now">start studying now!</string>
+    <string name="location_icon">location_icon</string>
+    <string name="start_study_now">Start Study Now!</string>
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
+    <string name="time_recorded">Time recorded 00:00:00</string>
 
 
 </resources>
