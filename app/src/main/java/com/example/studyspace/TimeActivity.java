@@ -34,16 +34,7 @@ public class TimeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_time);
         initTime();
-
-        chronometer.setOnChronometerTickListener(chronometer -> {
-            long elapsedMillis = SystemClock.elapsedRealtime() - chronometer.getBase();
-            int hours = (int) (elapsedMillis / 3600000);
-            int minutes = (int) (elapsedMillis - hours * 3600000) / 60000;
-            int seconds = (int) (elapsedMillis / 1000) % 60;
-            String text = String.format(Locale.getDefault(), "%02d:%02d:%02d", hours, minutes, seconds);
-            chronometer.setText(text);
-        });
-
+        configureChronometer();
 
         start.setOnClickListener(view -> {
             if (!isRunning) {
@@ -62,9 +53,8 @@ public class TimeActivity extends AppCompatActivity {
                 isRunning = false;
                 start.setEnabled(true);
                 stop.setEnabled(false);
-                String time = formatChronometerTime(pauseOffset);
+                String time = formatTime(pauseOffset);
                 timeRecord.setText("Time recorded  " + time);
-                databaseHelper.addStudyTime(userId, roomId, time);
                 boolean insertSuccessful = databaseHelper.addStudyTime(userId, roomId, time);
                 if (insertSuccessful) {
                     Log.d(TAG, "Data insert successful " + time);
@@ -115,10 +105,17 @@ public class TimeActivity extends AppCompatActivity {
 
     }
 
-    private String formatChronometerTime(long time) {
-        int hours = (int) (time / 3600000);
-        int minutes = (int) (time - hours * 3600000) / 60000;
-        int seconds = (int) (time - hours * 3600000 - minutes * 60000) / 1000;
+    private void configureChronometer(){
+        chronometer.setOnChronometerTickListener(chronometer -> {
+            long elapsedMillis = SystemClock.elapsedRealtime() - chronometer.getBase();
+            chronometer.setText(formatTime(elapsedMillis));
+        });
+    }
+
+    private String formatTime(long millis) {
+        int hours = (int) (millis / 3600000);
+        int minutes = (int) (millis - hours * 3600000) / 60000;
+        int seconds = (int) (millis - hours * 3600000 - minutes * 60000) / 1000;
         return String.format(Locale.getDefault(), "%02d:%02d:%02d", hours, minutes, seconds);
     }
 }

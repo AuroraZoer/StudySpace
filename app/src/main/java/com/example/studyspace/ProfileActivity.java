@@ -13,6 +13,8 @@ import com.example.studyspace.Database.DBUtil;
 import com.example.studyspace.Database.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -63,6 +65,12 @@ public class ProfileActivity extends AppCompatActivity {
         count = findViewById(R.id.profile_data_count);
         duration = findViewById(R.id.profile_data_duration);
         count.setText(String.valueOf(databaseHelper.gerUserStudyCount(userId)));
+        List<String> studyTimes = databaseHelper.getUserStudyTimes(userId);
+        long totalMillis = 0;
+        for (String time : studyTimes) {
+            totalMillis += convertTimeToMillis(time);
+        }
+        duration.setText(formatTime(totalMillis));
 
     }
 
@@ -72,6 +80,25 @@ public class ProfileActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    private long convertTimeToMillis(String time) {
+        // 将 "HH:mm:ss" 格式的时间字符串转换为毫秒
+        long millis = 0;
+        String[] parts = time.split(":");
+        if (parts.length == 3) {
+            int hours = Integer.parseInt(parts[0]);
+            int minutes = Integer.parseInt(parts[1]);
+            int seconds = Integer.parseInt(parts[2]);
+            millis = (hours * 3600 + minutes * 60 + seconds) * 1000L;
+        }
+        return millis;
+    }
+
+    private String formatTime(long millis) {
+        int hours = (int) (millis / 3600000);
+        int minutes = (int) (millis - hours * 3600000) / 60000;
+        int seconds = (int) (millis - hours * 3600000 - minutes * 60000) / 1000;
+        return String.format(Locale.getDefault(), "%02d:%02d:%02d", hours, minutes, seconds);
+    }
 
     private void bottomNavigationViewInit() {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);

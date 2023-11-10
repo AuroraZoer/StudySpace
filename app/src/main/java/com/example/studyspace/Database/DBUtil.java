@@ -352,9 +352,9 @@ public class DBUtil extends SQLiteOpenHelper {
     /**
      * Insert a new study time into the StudyTime table.
      *
-     * @param userID    The ID of the user associated with the study time.
-     * @param roomID    The ID of the room where the study time takes place.
-     * @param time The time of the study session.
+     * @param userID The ID of the user associated with the study time.
+     * @param roomID The ID of the room where the study time takes place.
+     * @param time   The time of the study session.
      * @return True if the insertion was successful, false otherwise.
      */
     public boolean addStudyTime(int userID, int roomID, String time) {
@@ -368,6 +368,31 @@ public class DBUtil extends SQLiteOpenHelper {
         return result != -1;
     }
 
+    /**
+     * Get the user's all study times
+     *
+     * @param userID The user ID
+     * @return The list of study times
+     */
+    public List<String> getUserStudyTimes(int userID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] columns = {TIME_COLUMN_TIME};
+        String selection = TIME_COLUMN_USER_ID + " = ?";
+        String[] selectionArgs = {String.valueOf(userID)};
+        Cursor cursor = db.query(TABLE_STUDY_TIME, columns, selection, selectionArgs, null, null, null);
+
+        List<String> studyTimes = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            int columnIndex = cursor.getColumnIndex(TIME_COLUMN_TIME);
+            if (columnIndex != -1) {
+                String time = cursor.getString(columnIndex);
+                studyTimes.add(time);
+            }
+        }
+        cursor.close();
+        db.close();
+        return studyTimes;
+    }
 
 
 }
