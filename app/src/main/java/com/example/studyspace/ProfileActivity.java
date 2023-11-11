@@ -105,13 +105,13 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private boolean shouldShowAnimation(int position) {
-        // 将总毫秒数转换为分钟
+        // Convert milliseconds to minutes
         long totalMinutes = totalMillis / 60000;
 
-        // 检查当前位置的勋章是否应该显示动画
-        // 每30分钟显示一个勋章的动画
-        // position + 1 是因为 position 是从0开始的，而我们需要从1开始计数
-        return totalMinutes >= (position + 1) * 30;
+        // Check if there is enough study time to show the animation
+        // Every 2 hours will show a new animation
+        // position + 1 because position starts from 0
+        return totalMinutes >= (position + 1) * 120;
     }
 
     private void showInfoDialog() {
