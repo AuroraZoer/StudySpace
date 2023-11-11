@@ -4,11 +4,15 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.GridLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.studyspace.Database.DBUtil;
 import com.example.studyspace.Database.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -24,6 +28,8 @@ public class ProfileActivity extends AppCompatActivity {
     TextView username, email, count, duration;
     ImageButton infoButton, logoutButton;
     Dialog dialog;
+    GridLayout gridLayout;
+    long totalMillis;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +44,6 @@ public class ProfileActivity extends AppCompatActivity {
             username.setText(user.getUsername());
             email.setText(user.getEmail());
         }
-
 
     }
 
@@ -66,12 +71,47 @@ public class ProfileActivity extends AppCompatActivity {
         duration = findViewById(R.id.profile_data_duration);
         count.setText(String.valueOf(databaseHelper.gerUserStudyCount(userId)));
         List<String> studyTimes = databaseHelper.getUserStudyTimes(userId);
-        long totalMillis = 0;
+        totalMillis = 0;
         for (String time : studyTimes) {
             totalMillis += convertTimeToMillis(time);
         }
+        Log.d(TAG, "Total milliseconds: " + totalMillis);
         duration.setText(formatTime(totalMillis));
 
+        gridLayout = findViewById(R.id.gridLayout);
+        for (int i = 0; i < 6; i++) {
+            setupMedalView(gridLayout, i);
+        }
+    }
+
+    private void setupMedalView(GridLayout gridLayout, int position) {
+        int imageViewId = getResources().getIdentifier("medal_image" + (position + 1), "id", getPackageName());
+        ImageView imageView = gridLayout.findViewById(imageViewId);
+
+        int lottieViewId = getResources().getIdentifier("medal_animation" + (position + 1), "id", getPackageName());
+        LottieAnimationView lottieView = gridLayout.findViewById(lottieViewId);
+
+        Log.d(TAG, position + " " + shouldShowAnimation(position) + " ");
+        if (shouldShowAnimation(position)) {
+            if (imageView != null) imageView.setVisibility(View.GONE);
+            if (lottieView != null) {
+                lottieView.setVisibility(View.VISIBLE);
+                lottieView.playAnimation();
+            }
+        } else {
+            if (lottieView != null) lottieView.setVisibility(View.GONE);
+            if (imageView != null) imageView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private boolean shouldShowAnimation(int position) {
+        // 将总毫秒数转换为分钟
+        long totalMinutes = totalMillis / 60000;
+
+        // 检查当前位置的勋章是否应该显示动画
+        // 每30分钟显示一个勋章的动画
+        // position + 1 是因为 position 是从0开始的，而我们需要从1开始计数
+        return totalMinutes >= (position + 1) * 30;
     }
 
     private void showInfoDialog() {
@@ -80,8 +120,13 @@ public class ProfileActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    /**
+     * Convert "HH:mm:ss" format time string to milliseconds
+     *
+     * @param time "HH:mm:ss" format time string
+     * @return milliseconds
+     */
     private long convertTimeToMillis(String time) {
-        // 将 "HH:mm:ss" 格式的时间字符串转换为毫秒
         long millis = 0;
         String[] parts = time.split(":");
         if (parts.length == 3) {
@@ -93,6 +138,12 @@ public class ProfileActivity extends AppCompatActivity {
         return millis;
     }
 
+    /**
+     * Format milliseconds to "HH:mm:ss" format time string
+     *
+     * @param millis milliseconds
+     * @return "HH:mm:ss" format time string
+     */
     private String formatTime(long millis) {
         int hours = (int) (millis / 3600000);
         int minutes = (int) (millis - hours * 3600000) / 60000;
