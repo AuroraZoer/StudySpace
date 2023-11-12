@@ -1,5 +1,6 @@
 package com.example.studyspace;
 
+import android.annotation.SuppressLint;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -13,13 +14,15 @@ import androidx.core.content.res.ResourcesCompat;
 
 import com.example.studyspace.Database.DBUtil;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 
 public class TimeActivity extends AppCompatActivity {
     private static final String TAG = "TimeActivity";
     DBUtil databaseHelper;
     ToolbarFragment toolbarFragment;
-    String selectedBuilding, selectedRoom;
+    String selectedBuilding, selectedRoom, timeOfDay, date;
     int userId, roomId;
     TextView building, classroom, timeRecord;
     Chronometer chronometer;
@@ -28,13 +31,13 @@ public class TimeActivity extends AppCompatActivity {
     boolean isRunning;
     long pauseOffset;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_time);
         initTime();
         configureChronometer();
+        setTimeOfDay();
 
         start.setOnClickListener(view -> {
             if (!isRunning) {
@@ -55,7 +58,7 @@ public class TimeActivity extends AppCompatActivity {
                 stop.setEnabled(false);
                 String time = formatTime(pauseOffset);
                 timeRecord.setText("Time recorded  " + time);
-                boolean insertSuccessful = databaseHelper.addStudyTime(userId, roomId, time);
+                boolean insertSuccessful = databaseHelper.addStudyTime(userId, roomId, time, timeOfDay, date);
                 if (insertSuccessful) {
                     Log.d(TAG, "Data insert successful " + time);
                 } else {
@@ -66,7 +69,7 @@ public class TimeActivity extends AppCompatActivity {
                 chronometer.setText("00:00:00");
             }
         });
-        
+
     }
 
     private void initTime() {
@@ -105,7 +108,25 @@ public class TimeActivity extends AppCompatActivity {
 
     }
 
-    private void configureChronometer(){
+    private void setTimeOfDay() {
+        Date currentDate = new Date();
+        Log.d(TAG, "Current Date: " + currentDate);
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat hourFormat = new SimpleDateFormat("HH");
+        String currentHour = hourFormat.format(currentDate);
+        if (currentHour.compareTo("12") < 0) {
+            timeOfDay = "Morning";
+        } else if (currentHour.compareTo("18") < 0) {
+            timeOfDay = "Afternoon";
+        } else {
+            timeOfDay = "Evening";
+        }
+        Log.d(TAG, "Time of Day: " + timeOfDay);
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        date = dateFormat.format(currentDate);
+        Log.d(TAG, "Date: " + date);
+    }
+
+    private void configureChronometer() {
         chronometer.setOnChronometerTickListener(chronometer -> {
             long elapsedMillis = SystemClock.elapsedRealtime() - chronometer.getBase();
             chronometer.setText(formatTime(elapsedMillis));

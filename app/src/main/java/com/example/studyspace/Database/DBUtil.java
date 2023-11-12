@@ -35,6 +35,8 @@ public class DBUtil extends SQLiteOpenHelper {
     private static final String TIME_COLUMN_USER_ID = "UserID";
     private static final String TIME_COLUMN_ROOM_ID = "RoomID";
     private static final String TIME_COLUMN_TIME = "Time";
+    private static final String TIME_COLUMN_TIME_OF_DAY = "TimeOfDay";
+    private static final String TIME_COLUMN_DATE = "Date";
 
     public DBUtil(Context context) {
         super(context, databaseName, null, databaseVersion);
@@ -66,6 +68,8 @@ public class DBUtil extends SQLiteOpenHelper {
                 TIME_COLUMN_USER_ID + " INTEGER, " +
                 TIME_COLUMN_ROOM_ID + " INTEGER, " +
                 TIME_COLUMN_TIME + " TEXT, " +
+                TIME_COLUMN_TIME_OF_DAY + " TEXT, " +
+                TIME_COLUMN_DATE + " TEXT, " +
                 "FOREIGN KEY(" + TIME_COLUMN_USER_ID + ") REFERENCES " + TABLE_USER + "(" + USER_COLUMN_ID + "), " +
                 "FOREIGN KEY(" + TIME_COLUMN_ROOM_ID + ") REFERENCES " + TABLE_STUDY_ROOM + "(" + ROOM_COLUMN_ID + "));";
         db.execSQL(createStudyTimeTable);
@@ -323,6 +327,35 @@ public class DBUtil extends SQLiteOpenHelper {
         return roomID;
     }
 
+    public StudyRoom getStudyRoomDetails(int roomId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] columns = {ROOM_COLUMN_ID, ROOM_COLUMN_NAME, ROOM_COLUMN_BUILDING, ROOM_COLUMN_MORNING_AVAILABILITY, ROOM_COLUMN_AFTERNOON_AVAILABILITY, ROOM_COLUMN_EVENING_AVAILABILITY};
+        String selection = ROOM_COLUMN_ID + " = ?";
+        String[] selectionArgs = {String.valueOf(roomId)};
+        Cursor cursor = db.query(TABLE_STUDY_ROOM, columns, selection, selectionArgs, null, null, null);
+        StudyRoom studyRoom = null;
+        if (cursor.moveToFirst()) {
+            int idColumnIndex = cursor.getColumnIndex(ROOM_COLUMN_ID);
+            int nameColumnIndex = cursor.getColumnIndex(ROOM_COLUMN_NAME);
+            int buildingColumnIndex = cursor.getColumnIndex(ROOM_COLUMN_BUILDING);
+            int morningAvailabilityColumnIndex = cursor.getColumnIndex(ROOM_COLUMN_MORNING_AVAILABILITY);
+            int afternoonAvailabilityColumnIndex = cursor.getColumnIndex(ROOM_COLUMN_AFTERNOON_AVAILABILITY);
+            int eveningAvailabilityColumnIndex = cursor.getColumnIndex(ROOM_COLUMN_EVENING_AVAILABILITY);
+            if (idColumnIndex >= 0 && nameColumnIndex >= 0 && buildingColumnIndex >= 0 && morningAvailabilityColumnIndex >= 0 && afternoonAvailabilityColumnIndex >= 0 && eveningAvailabilityColumnIndex >= 0) {
+                int id = cursor.getInt(idColumnIndex);
+                String name = cursor.getString(nameColumnIndex);
+                String building = cursor.getString(buildingColumnIndex);
+                int morningAvailability = cursor.getInt(morningAvailabilityColumnIndex);
+                int afternoonAvailability = cursor.getInt(afternoonAvailabilityColumnIndex);
+                int eveningAvailability = cursor.getInt(eveningAvailabilityColumnIndex);
+
+                studyRoom = new StudyRoom(id, name, building, morningAvailability, afternoonAvailability, eveningAvailability);
+            }
+        }
+        cursor.close();
+        return studyRoom;
+    }
+
 
     // StudyTime table methods
 
@@ -357,12 +390,14 @@ public class DBUtil extends SQLiteOpenHelper {
      * @param time   The time of the study session.
      * @return True if the insertion was successful, false otherwise.
      */
-    public boolean addStudyTime(int userID, int roomID, String time) {
+    public boolean addStudyTime(int userID, int roomID, String time, String timeOfDay, String date) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(TIME_COLUMN_USER_ID, userID);
         contentValues.put(TIME_COLUMN_ROOM_ID, roomID);
         contentValues.put(TIME_COLUMN_TIME, time);
+        contentValues.put(TIME_COLUMN_TIME_OF_DAY, timeOfDay);
+        contentValues.put(TIME_COLUMN_DATE, date);
         long result = db.insert(TABLE_STUDY_TIME, null, contentValues);
         db.close();
         return result != -1;
