@@ -7,13 +7,10 @@
     <string name="email">Email</string>
     <string name="notHaveAccount">Don\'t have an account? Sign up now.</string>
     <string name="alreadyHaveAccount">Already have an account? Login now.</string>
-
     <string name="search">Search</string>
     <string name="select_building">Select Building</string>
     <string name="search_button">Confirm Search</string>
-
     <string name="analyse">Visual Analysis</string>
-
     <string name="profile">Profile</string>
     <string name="info">info</string>
     <string name="logout">logout</string>
@@ -22,7 +19,6 @@
     <string name="cancel">cancel</string>
     <string name="duration">Duration</string>
     <string name="count">Count</string>
-
     <string name="MC">COMP3011J Mobile Computing</string>
     <string name="zyr">Yiran Zhao</string>
     <string name="ucd">UCD number 21207295</string>
@@ -30,7 +26,6 @@
     <string name="available_classroom">Available Classroom</string>
     <string name="building_1">Building 1</string>
     <string name="building_2">Building 2</string>
-
     <string name="click_a_classroom">Click a classroom,</string>
     <string name="start_studying_now">start studying now!</string>
     <string name="location_icon">location_icon</string>
@@ -38,6 +33,11 @@
     <string name="start">Start</string>
     <string name="stop">Stop</string>
     <string name="time_recorded">Time recorded 00:00:00</string>
+    <string name="time">Time</string>
+    <string name="show_visualisation">Show Visualisation</string>
+    <string name="building">Building</string>
+    <string name="date">Date</string>
+    <string name="chart">Chart</string>
 
 
 </resources>

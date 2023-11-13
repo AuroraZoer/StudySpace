@@ -10,4 +10,7 @@
     <color name="macronRed">#fc8d87</color>
     <color name="macronYellow">#fcc37f</color>
     <color name="darkBlue">#6F95BB</color>
+    <color name="light1">#FFFFED</color>
+    <color name="light2">#F1F9FD</color>
+    <color name="light3">#FFF4F4</color>
 </resources>

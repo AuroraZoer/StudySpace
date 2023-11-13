@@ -17,11 +17,11 @@ public class SplashScreen extends AppCompatActivity {
         setContentView(R.layout.activity_splash_screen);
         lottie = findViewById(R.id.lottie);
 
-        lottie.animate().translationY(-1600).setDuration(1000).setStartDelay(5000);
+        lottie.animate().translationY(-1600).setDuration(1000).setStartDelay(4000);
         new Handler().postDelayed(() -> {
             Intent intent = new Intent(SplashScreen.this, MainActivity.class);
             startActivity(intent);
-        }, 5000);
+        }, 4000);
 
     }
 }
