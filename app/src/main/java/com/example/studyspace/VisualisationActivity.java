@@ -17,6 +17,7 @@ public class VisualisationActivity extends AppCompatActivity {
     ToolbarFragment toolbarFragment;
     int userId;
     TextView chartTitle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +47,7 @@ public class VisualisationActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.toolbar_fragment, toolbarFragment).commit();
 
 
-     }
+    }
 
     private void loadFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction()
