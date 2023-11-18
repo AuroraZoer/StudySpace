@@ -10,9 +10,22 @@ import androidx.fragment.app.Fragment;
 import com.anychart.AnyChart;
 import com.anychart.AnyChartView;
 import com.anychart.charts.Pie;
+import com.example.studyspace.Database.DBUtil;
 import com.example.studyspace.R;
 
 public class PieFragment extends Fragment {
+    private static final String TAG = "PieFragment";
+    DBUtil databaseHelper;
+    private int userId;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            userId = getArguments().getInt("userId", -1);
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -23,12 +36,12 @@ public class PieFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        databaseHelper = new DBUtil(getActivity());
 
         AnyChartView anyChartView = view.findViewById(R.id.pie_chart_view);
 
         Pie pieChart = AnyChart.pie();
 
         anyChartView.setChart(pieChart);
-
     }
 }

@@ -29,18 +29,21 @@ public class VisualisationActivity extends AppCompatActivity {
     private void initVisualisation() {
         chartTitle = findViewById(R.id.title_chart);
         int visualisationType = getIntent().getIntExtra("visualisation_type", 0);
-        if (visualisationType == 1) {
-            loadFragment(new BarFragment());
-            chartTitle.setText("Bar Chart");
-        } else if (visualisationType == 2) {
-            loadFragment(new PieFragment());
-            chartTitle.setText("Pie Chart");
-        } else if (visualisationType == 3) {
-            loadFragment(new LineFragment());
-            chartTitle.setText("Line Chart");
-        }
         userId = getIntent().getIntExtra("user_id", -1);
         Log.d(TAG, "user id: " + userId);
+
+        Fragment fragment;
+        if (visualisationType == 1) {
+            fragment = new BarFragment();
+            chartTitle.setText("Bar Chart");
+        } else if (visualisationType == 2) {
+            fragment = new PieFragment();
+            chartTitle.setText("Pie Chart");
+        } else {
+            fragment = new LineFragment();
+            chartTitle.setText("Line Chart");
+        }
+        loadFragment(fragment, userId);
 
         // Set up toolbar fragment
         toolbarFragment = new ToolbarFragment();
@@ -49,9 +52,14 @@ public class VisualisationActivity extends AppCompatActivity {
 
     }
 
-    private void loadFragment(Fragment fragment) {
+    private void loadFragment(Fragment fragment, int userId) {
+        Bundle bundle = new Bundle();
+        bundle.putInt("userId", userId);
+        fragment.setArguments(bundle);
+
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment)
                 .commit();
     }
+
 }
