@@ -429,5 +429,35 @@ public class DBUtil extends SQLiteOpenHelper {
         return studyTimes;
     }
 
+    /**
+     * Get the user's study times in the specified building
+     *
+     * @param userID   The user ID
+     * @param building The building
+     * @return The list of study times
+     */
+    public List<String> getUserStudyTimesInBuilding(int userID, String building) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        List<String> studyTimes = new ArrayList<>();
+
+        String query = "SELECT " + TIME_COLUMN_TIME + " FROM " + TABLE_STUDY_TIME +
+                " JOIN " + TABLE_STUDY_ROOM +
+                " ON " + TABLE_STUDY_TIME + "." + TIME_COLUMN_ROOM_ID + " = " + TABLE_STUDY_ROOM + "." + ROOM_COLUMN_ID +
+                " WHERE " + TIME_COLUMN_USER_ID + " = ? AND " + ROOM_COLUMN_BUILDING + " = ?";
+        String[] selectionArgs = {String.valueOf(userID), building};
+
+        Cursor cursor = db.rawQuery(query, selectionArgs);
+        while (cursor.moveToNext()) {
+            int columnIndex = cursor.getColumnIndex(TIME_COLUMN_TIME);
+            if (columnIndex != -1) {
+                String time = cursor.getString(columnIndex);
+                studyTimes.add(time);
+            }
+        }
+        cursor.close();
+        db.close();
+        return studyTimes;
+    }
+
 
 }
