@@ -459,5 +459,33 @@ public class DBUtil extends SQLiteOpenHelper {
         return studyTimes;
     }
 
+    /**
+     * Get the user's study times in the specified building and time of day
+     *
+     * @param userID    The user ID
+     * @param timeOfDay The time of day
+     * @return The list of study times
+     */
+    public List<String> getUserStudyTimesInPeriods(int userID, String timeOfDay) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        List<String> studyTimes = new ArrayList<>();
+
+        String query = "SELECT " + TIME_COLUMN_TIME + " FROM " + TABLE_STUDY_TIME +
+                " WHERE " + TIME_COLUMN_USER_ID + " = ? AND " + TIME_COLUMN_TIME_OF_DAY + " = ?";
+        String[] selectionArgs = {String.valueOf(userID), timeOfDay};
+
+        Cursor cursor = db.rawQuery(query, selectionArgs);
+        while (cursor.moveToNext()) {
+            int columnIndex = cursor.getColumnIndex(TIME_COLUMN_TIME);
+            if (columnIndex != -1) {
+                String time = cursor.getString(columnIndex);
+                studyTimes.add(time);
+            }
+        }
+        cursor.close();
+        db.close();
+        return studyTimes;
+    }
+
 
 }

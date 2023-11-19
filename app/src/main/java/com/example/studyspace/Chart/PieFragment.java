@@ -1,17 +1,28 @@
 package com.example.studyspace.Chart;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.anychart.AnyChart;
 import com.anychart.AnyChartView;
+import com.anychart.chart.common.dataentry.DataEntry;
+import com.anychart.chart.common.dataentry.ValueDataEntry;
+import com.anychart.chart.common.listener.Event;
+import com.anychart.chart.common.listener.ListenersInterface;
 import com.anychart.charts.Pie;
 import com.example.studyspace.Database.DBUtil;
+import com.example.studyspace.ProfileActivity;
 import com.example.studyspace.R;
+
+import java.util.List;
+import java.util.Objects;
 
 public class PieFragment extends Fragment {
     private static final String TAG = "PieFragment";
@@ -34,14 +45,58 @@ public class PieFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         databaseHelper = new DBUtil(getActivity());
 
         AnyChartView anyChartView = view.findViewById(R.id.pie_chart_view);
 
         Pie pieChart = AnyChart.pie();
+        long building1Time = getTotalStudyTimeInBuilding("Building 1");
+        long building2Time = getTotalStudyTimeInBuilding("Building 2");
+        long building3Time = getTotalStudyTimeInBuilding("Building 3");
+        long building4Time = getTotalStudyTimeInBuilding("Building 4");
+
+        List<DataEntry> data = new java.util.ArrayList<>();
+        data.add(new ValueDataEntry("Building 1", building1Time));
+        data.add(new ValueDataEntry("Building 2", building2Time));
+        data.add(new ValueDataEntry("Building 3", building3Time));
+        data.add(new ValueDataEntry("Building 4", building4Time));
+
+        pieChart.data(data);
+        pieChart.title("Study Time in Each Building");
+        pieChart.labels().position("outside");
+        pieChart.legend().title()
+                .text("Buildings")
+                .padding(0d, 0d, 10d, 0d);
+        pieChart.legend()
+                .position("center-bottom")
+                .itemsLayout("horizontal")
+                .align("center");
+        pieChart.setOnClickListener(new ListenersInterface.OnClickListener(new String[]{"x", "value"}) {
+            @Override
+            public void onClick(Event event) {
+                String buildingName = event.getData().get("x");
+                long timeSpentMillis = Long.parseLong(Objects.requireNonNull(event.getData().get("value")));
+
+                String formattedTime = ProfileActivity.formatTime(timeSpentMillis);
+                String formattedMessage = buildingName + ": " + formattedTime;
+
+                Toast.makeText(getActivity(), formattedMessage, Toast.LENGTH_SHORT).show();
+            }
+        });
+        pieChart.tooltip().enabled(false);
 
         anyChartView.setChart(pieChart);
+    }
+
+    private long getTotalStudyTimeInBuilding(String buildingName) {
+        List<String> studyTimes = databaseHelper.getUserStudyTimesInBuilding(userId, buildingName);
+        long totalTime = 0;
+        for (String time : studyTimes) {
+            totalTime += ProfileActivity.convertTimeToMillis(time);
+        }
+        Log.d(TAG, buildingName + " time: " + totalTime);
+        return totalTime;
     }
 }

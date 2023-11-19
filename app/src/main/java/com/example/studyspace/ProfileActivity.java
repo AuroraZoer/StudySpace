@@ -126,7 +126,7 @@ public class ProfileActivity extends AppCompatActivity {
      * @param time "HH:mm:ss" format time string
      * @return milliseconds
      */
-    private long convertTimeToMillis(String time) {
+    public static long convertTimeToMillis(String time) {
         long millis = 0;
         String[] parts = time.split(":");
         if (parts.length == 3) {
@@ -144,7 +144,7 @@ public class ProfileActivity extends AppCompatActivity {
      * @param millis milliseconds
      * @return "HH:mm:ss" format time string
      */
-    private String formatTime(long millis) {
+    public static String formatTime(long millis) {
         int hours = (int) (millis / 3600000);
         int minutes = (int) (millis - hours * 3600000) / 60000;
         int seconds = (int) (millis - hours * 3600000 - minutes * 60000) / 1000;
