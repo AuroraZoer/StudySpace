@@ -5,11 +5,16 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Pair;
 
 import com.example.studyspace.ProfileActivity;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DBUtil extends SQLiteOpenHelper {
     private static final String databaseName = "StudySpace.db";
@@ -159,6 +164,12 @@ public class DBUtil extends SQLiteOpenHelper {
         return userId;
     }
 
+    /**
+     * Get the user by ID
+     *
+     * @param id The user ID
+     * @return The user
+     */
     public User getUserById(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
         String[] columns = {USER_COLUMN_ID, USER_COLUMN_USERNAME, USER_COLUMN_EMAIL, USER_COLUMN_PASSWORD};
@@ -329,35 +340,6 @@ public class DBUtil extends SQLiteOpenHelper {
         return roomID;
     }
 
-    public StudyRoom getStudyRoomDetails(int roomId) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        String[] columns = {ROOM_COLUMN_ID, ROOM_COLUMN_NAME, ROOM_COLUMN_BUILDING, ROOM_COLUMN_MORNING_AVAILABILITY, ROOM_COLUMN_AFTERNOON_AVAILABILITY, ROOM_COLUMN_EVENING_AVAILABILITY};
-        String selection = ROOM_COLUMN_ID + " = ?";
-        String[] selectionArgs = {String.valueOf(roomId)};
-        Cursor cursor = db.query(TABLE_STUDY_ROOM, columns, selection, selectionArgs, null, null, null);
-        StudyRoom studyRoom = null;
-        if (cursor.moveToFirst()) {
-            int idColumnIndex = cursor.getColumnIndex(ROOM_COLUMN_ID);
-            int nameColumnIndex = cursor.getColumnIndex(ROOM_COLUMN_NAME);
-            int buildingColumnIndex = cursor.getColumnIndex(ROOM_COLUMN_BUILDING);
-            int morningAvailabilityColumnIndex = cursor.getColumnIndex(ROOM_COLUMN_MORNING_AVAILABILITY);
-            int afternoonAvailabilityColumnIndex = cursor.getColumnIndex(ROOM_COLUMN_AFTERNOON_AVAILABILITY);
-            int eveningAvailabilityColumnIndex = cursor.getColumnIndex(ROOM_COLUMN_EVENING_AVAILABILITY);
-            if (idColumnIndex >= 0 && nameColumnIndex >= 0 && buildingColumnIndex >= 0 && morningAvailabilityColumnIndex >= 0 && afternoonAvailabilityColumnIndex >= 0 && eveningAvailabilityColumnIndex >= 0) {
-                int id = cursor.getInt(idColumnIndex);
-                String name = cursor.getString(nameColumnIndex);
-                String building = cursor.getString(buildingColumnIndex);
-                int morningAvailability = cursor.getInt(morningAvailabilityColumnIndex);
-                int afternoonAvailability = cursor.getInt(afternoonAvailabilityColumnIndex);
-                int eveningAvailability = cursor.getInt(eveningAvailabilityColumnIndex);
-
-                studyRoom = new StudyRoom(id, name, building, morningAvailability, afternoonAvailability, eveningAvailability);
-            }
-        }
-        cursor.close();
-        return studyRoom;
-    }
-
 
     // StudyTime table methods
 
@@ -502,6 +484,39 @@ public class DBUtil extends SQLiteOpenHelper {
     }
 
     /**
+     * Get the user's study times' date range
+     *
+     * @param userID The user ID
+     * @return The date range Pair
+     */
+    public Pair<String, String> getUserStudyDateRange(int userID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String earliestQuery = "SELECT MIN(" + TIME_COLUMN_DATE + ") FROM " + TABLE_STUDY_TIME + " WHERE " + TIME_COLUMN_USER_ID + " = ?";
+        String latestQuery = "SELECT MAX(" + TIME_COLUMN_DATE + ") FROM " + TABLE_STUDY_TIME + " WHERE " + TIME_COLUMN_USER_ID + " = ?";
+        String[] selectionArgs = {String.valueOf(userID)};
+
+        Cursor earliestCursor = db.rawQuery(earliestQuery, selectionArgs);
+        Cursor latestCursor = db.rawQuery(latestQuery, selectionArgs);
+
+        String earliestDate = "";
+        String latestDate = "";
+
+        if (earliestCursor.moveToFirst()) {
+            earliestDate = earliestCursor.getString(0);
+        }
+        if (latestCursor.moveToFirst()) {
+            latestDate = latestCursor.getString(0);
+        }
+
+        earliestCursor.close();
+        latestCursor.close();
+        db.close();
+
+        return new Pair<>(earliestDate, latestDate);
+    }
+
+
+    /**
      * Get the user's study times in the specified building and time of day
      *
      * @param userID The user ID
@@ -535,7 +550,22 @@ public class DBUtil extends SQLiteOpenHelper {
         return totalMillis;
     }
 
-    public List<String> getUserStudyTimesInPeriodsAndDate(int userID, String timeOfDay, String date) {
+    public Map<String, Long> getDailyStudyTimesForRange(int userID, String startDate, String endDate) {
+        Map<String, Long> dailyStudyTimes = new LinkedHashMap<>();
+        LocalDate start = LocalDate.parse(startDate);
+        LocalDate end = LocalDate.parse(endDate);
+
+        for (LocalDate date = start; !date.isAfter(end); date = date.plusDays(1)) {
+            String dateString = date.format(DateTimeFormatter.ISO_LOCAL_DATE);
+            long dailyTotal = getUserStudyTimesInDate(userID, dateString);
+            dailyStudyTimes.put(dateString, dailyTotal);
+        }
+
+        return dailyStudyTimes;
+    }
+
+
+    public long getUserStudyTimesInPeriodsAndDate(int userID, String timeOfDay, String date) {
         SQLiteDatabase db = this.getReadableDatabase();
         List<String> studyTimes = new ArrayList<>();
 
@@ -553,10 +583,14 @@ public class DBUtil extends SQLiteOpenHelper {
         }
         cursor.close();
         db.close();
-        return studyTimes;
+
+        long totalMillis = 0;
+        for (String time : studyTimes) {
+            totalMillis += ProfileActivity.convertTimeToMillis(time);
+        }
+
+        return totalMillis;
     }
-
-
 
 
 }
