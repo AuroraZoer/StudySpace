@@ -1,14 +1,13 @@
 package com.example.studyspace.Chart;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.fragment.app.Fragment;
 
 import com.anychart.AnyChart;
 import com.anychart.AnyChartView;
@@ -20,9 +19,8 @@ import com.anychart.data.Mapping;
 import com.anychart.data.Set;
 import com.anychart.enums.Anchor;
 import com.anychart.enums.MarkerType;
-import com.anychart.enums.TooltipPositionMode;
-import com.anychart.graphics.vector.Stroke;
 import com.example.studyspace.Database.DBUtil;
+import com.example.studyspace.Database.DailyStudyTimes;
 import com.example.studyspace.ProfileActivity;
 import com.example.studyspace.R;
 
@@ -58,15 +56,6 @@ public class LineFragment extends Fragment {
         AnyChartView anyChartView = view.findViewById(R.id.line_chart_view);
 
         Cartesian lineChart = AnyChart.line();
-        Pair<String, String> dateRange = databaseHelper.getUserStudyDateRange(userId);
-        Map<String, Long> dailyStudyTimes = databaseHelper.getDailyStudyTimesForRange(userId, dateRange.first, dateRange.second);
-        List<DataEntry> seriesData = new ArrayList<>();
-        for (Map.Entry<String, Long> entry : dailyStudyTimes.entrySet()) {
-            String formattedTime = ProfileActivity.formatTime(entry.getValue());
-            seriesData.add(new CustomDataEntry(entry.getKey(), entry.getValue(), formattedTime));
-            Log.d(TAG, "Date: " + entry.getKey() + " Time: " + entry.getValue());
-        }
-
         lineChart.animation(true);
         lineChart.title("Daily Study Time");
         lineChart.yAxis(0).title("Study Time");
@@ -79,12 +68,33 @@ public class LineFragment extends Fragment {
                 "   return ('0' + hours).slice(-2) + ':' + ('0' + minutes).slice(-2) + ':' + ('0' + seconds).slice(-2);\n" +
                 "}");  // y-axis labels format HH:MM:SS
 
+        Pair<String, String> dateRange = databaseHelper.getUserStudyDateRange(userId);
+        DailyStudyTimes dailyStudyTimes = databaseHelper.getDailyStudyTimesForRange(userId, dateRange.first, dateRange.second);
+        addLineSeries(lineChart, dailyStudyTimes.getTotalTimes(), "Total Time");
+        addLineSeries(lineChart, dailyStudyTimes.getMorningTimes(), "Morning");
+        addLineSeries(lineChart, dailyStudyTimes.getAfternoonTimes(), "Afternoon");
+        addLineSeries(lineChart, dailyStudyTimes.getEveningTimes(), "Evening");
+
+        lineChart.legend().enabled(true);  // show legend
+        lineChart.legend().fontSize(13d);
+        lineChart.legend().padding(0d, 0d, 10d, 0d);
+
+        anyChartView.setChart(lineChart);
+    }
+
+    private void addLineSeries(Cartesian lineChart, Map<String, Long> studyTimes, String seriesName) {
+        List<DataEntry> seriesData = new ArrayList<>();
+        for (Map.Entry<String, Long> entry : studyTimes.entrySet()) {
+            seriesData.add(new CustomDataEntry(entry.getKey(), entry.getValue(), seriesName, ProfileActivity.formatTime(entry.getValue())));
+            Log.d(TAG, "Date: " + entry.getKey() + " Time: " + entry.getValue());
+        }
+
         Set set = Set.instantiate();
         set.data(seriesData);
         Mapping seriesMapping = set.mapAs("{ x: 'x', value: 'value' }");
 
         Line series = lineChart.line(seriesMapping);
-        series.name("Total Time");
+        series.name(seriesName);
         series.hovered().markers().enabled(true);  // show markers on hover
         series.hovered().markers()
                 .type(MarkerType.CIRCLE)
@@ -95,19 +105,14 @@ public class LineFragment extends Fragment {
                 .offsetX(5d)
                 .offsetY(5d)
                 .format("function() {\n" +
-                        "   return this.getData('formattedTime');\n" +
-                        "}");
-
-        lineChart.legend().enabled(true);  // show legend
-        lineChart.legend().fontSize(13d);
-        lineChart.legend().padding(0d, 0d, 10d, 0d);
-
-        anyChartView.setChart(lineChart);
+                        "   return this.getData('seriesName') + ': ' + this.getData('formattedTime');\n" +
+                        "}");  // tooltip format: seriesName: HH:MM:SSwjd
     }
 
     private class CustomDataEntry extends ValueDataEntry {
-        CustomDataEntry(String x, Number value, String formattedTime) {
+        CustomDataEntry(String x, Number value, String seriesName, String formattedTime) {
             super(x, value);
+            setValue("seriesName", seriesName);
             setValue("formattedTime", formattedTime);
         }
     }

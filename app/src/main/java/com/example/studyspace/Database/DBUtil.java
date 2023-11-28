@@ -550,21 +550,6 @@ public class DBUtil extends SQLiteOpenHelper {
         return totalMillis;
     }
 
-    public Map<String, Long> getDailyStudyTimesForRange(int userID, String startDate, String endDate) {
-        Map<String, Long> dailyStudyTimes = new LinkedHashMap<>();
-        LocalDate start = LocalDate.parse(startDate);
-        LocalDate end = LocalDate.parse(endDate);
-
-        for (LocalDate date = start; !date.isAfter(end); date = date.plusDays(1)) {
-            String dateString = date.format(DateTimeFormatter.ISO_LOCAL_DATE);
-            long dailyTotal = getUserStudyTimesInDate(userID, dateString);
-            dailyStudyTimes.put(dateString, dailyTotal);
-        }
-
-        return dailyStudyTimes;
-    }
-
-
     public long getUserStudyTimesInPeriodsAndDate(int userID, String timeOfDay, String date) {
         SQLiteDatabase db = this.getReadableDatabase();
         List<String> studyTimes = new ArrayList<>();
@@ -591,6 +576,33 @@ public class DBUtil extends SQLiteOpenHelper {
 
         return totalMillis;
     }
+
+    public DailyStudyTimes getDailyStudyTimesForRange(int userID, String startDate, String endDate) {
+        DailyStudyTimes studyTimes = new DailyStudyTimes();
+        LocalDate start = LocalDate.parse(startDate);
+        LocalDate end = LocalDate.parse(endDate);
+
+        Map<String, Long> totalTimes = new LinkedHashMap<>();
+        Map<String, Long> morningTimes = new LinkedHashMap<>();
+        Map<String, Long> afternoonTimes = new LinkedHashMap<>();
+        Map<String, Long> eveningTimes = new LinkedHashMap<>();
+
+        for (LocalDate date = start; !date.isAfter(end); date = date.plusDays(1)) {
+            String dateString = date.format(DateTimeFormatter.ISO_LOCAL_DATE);
+            totalTimes.put(dateString, getUserStudyTimesInDate(userID, dateString));
+            morningTimes.put(dateString, getUserStudyTimesInPeriodsAndDate(userID, "Morning", dateString));
+            afternoonTimes.put(dateString, getUserStudyTimesInPeriodsAndDate(userID, "Afternoon", dateString));
+            eveningTimes.put(dateString, getUserStudyTimesInPeriodsAndDate(userID, "Evening", dateString));
+        }
+
+        studyTimes.setTotalTimes(totalTimes);
+        studyTimes.setMorningTimes(morningTimes);
+        studyTimes.setAfternoonTimes(afternoonTimes);
+        studyTimes.setEveningTimes(eveningTimes);
+
+        return studyTimes;
+    }
+
 
 
 }
