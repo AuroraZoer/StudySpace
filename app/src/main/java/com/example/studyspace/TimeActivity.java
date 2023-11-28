@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.TextView;
 
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 
@@ -106,6 +107,16 @@ public class TimeActivity extends AppCompatActivity {
         stop = findViewById(R.id.btn_stop);
         timeRecord = findViewById(R.id.time_recorded);
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isRunning) {
+            Toast.makeText(this, "Please stop the timer before leaving", Toast.LENGTH_SHORT).show();
+        } else {
+            super.onBackPressed();
+            finish();
+        }
     }
 
     private void setTimeOfDay() {
