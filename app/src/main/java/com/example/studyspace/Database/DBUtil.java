@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.example.studyspace.ProfileActivity;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -434,9 +436,9 @@ public class DBUtil extends SQLiteOpenHelper {
      *
      * @param userID   The user ID
      * @param building The building
-     * @return The list of study times
+     * @return The total study time in specified building
      */
-    public List<String> getUserStudyTimesInBuilding(int userID, String building) {
+    public long getUserStudyTimesInBuilding(int userID, String building) {
         SQLiteDatabase db = this.getReadableDatabase();
         List<String> studyTimes = new ArrayList<>();
 
@@ -456,17 +458,23 @@ public class DBUtil extends SQLiteOpenHelper {
         }
         cursor.close();
         db.close();
-        return studyTimes;
+
+        long totalMillis = 0;
+        for (String time : studyTimes) {
+            totalMillis += ProfileActivity.convertTimeToMillis(time);
+        }
+
+        return totalMillis;
     }
 
     /**
-     * Get the user's study times in the specified building and time of day
+     * Get the user's study times in the specified time of day
      *
      * @param userID    The user ID
      * @param timeOfDay The time of day
-     * @return The list of study times
+     * @return The total study time in specified time of day
      */
-    public List<String> getUserStudyTimesInPeriods(int userID, String timeOfDay) {
+    public long getUserStudyTimesInPeriods(int userID, String timeOfDay) {
         SQLiteDatabase db = this.getReadableDatabase();
         List<String> studyTimes = new ArrayList<>();
 
@@ -484,8 +492,71 @@ public class DBUtil extends SQLiteOpenHelper {
         }
         cursor.close();
         db.close();
+
+        long totalMillis = 0;
+        for (String time : studyTimes) {
+            totalMillis += ProfileActivity.convertTimeToMillis(time);
+        }
+
+        return totalMillis;
+    }
+
+    /**
+     * Get the user's study times in the specified building and time of day
+     *
+     * @param userID The user ID
+     * @param date   The date
+     * @return The total study time in specified building and time of day
+     */
+    public long getUserStudyTimesInDate(int userID, String date) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        List<String> studyTimes = new ArrayList<>();
+
+        String query = "SELECT " + TIME_COLUMN_TIME + " FROM " + TABLE_STUDY_TIME +
+                " WHERE " + TIME_COLUMN_USER_ID + " = ? AND " + TIME_COLUMN_DATE + " = ?";
+        String[] selectionArgs = {String.valueOf(userID), date};
+
+        Cursor cursor = db.rawQuery(query, selectionArgs);
+        while (cursor.moveToNext()) {
+            int columnIndex = cursor.getColumnIndex(TIME_COLUMN_TIME);
+            if (columnIndex != -1) {
+                String time = cursor.getString(columnIndex);
+                studyTimes.add(time);
+            }
+        }
+        cursor.close();
+        db.close();
+
+        long totalMillis = 0;
+        for (String time : studyTimes) {
+            totalMillis += ProfileActivity.convertTimeToMillis(time);
+        }
+
+        return totalMillis;
+    }
+
+    public List<String> getUserStudyTimesInPeriodsAndDate(int userID, String timeOfDay, String date) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        List<String> studyTimes = new ArrayList<>();
+
+        String query = "SELECT " + TIME_COLUMN_TIME + " FROM " + TABLE_STUDY_TIME +
+                " WHERE " + TIME_COLUMN_USER_ID + " = ? AND " + TIME_COLUMN_TIME_OF_DAY + " = ? AND " + TIME_COLUMN_DATE + " = ?";
+        String[] selectionArgs = {String.valueOf(userID), timeOfDay, date};
+
+        Cursor cursor = db.rawQuery(query, selectionArgs);
+        while (cursor.moveToNext()) {
+            int columnIndex = cursor.getColumnIndex(TIME_COLUMN_TIME);
+            if (columnIndex != -1) {
+                String time = cursor.getString(columnIndex);
+                studyTimes.add(time);
+            }
+        }
+        cursor.close();
+        db.close();
         return studyTimes;
     }
+
+
 
 
 }

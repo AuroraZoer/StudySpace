@@ -46,24 +46,17 @@ public class BarFragment extends Fragment {
         AnyChartView anyChartView = view.findViewById(R.id.bar_chart_view);
         Cartesian3d barChart = AnyChart.column3d();
 
-        long morningTime = getTotalStudyTimeInPeriod("Morning");
-        long afternoonTime = getTotalStudyTimeInPeriod("Afternoon");
-        long eveningTime = getTotalStudyTimeInPeriod("Evening");
+        long morningTime = databaseHelper.getUserStudyTimesInPeriods(userId,"Morning");
+        Log.d(TAG, "Morning Time: " + morningTime);
+        long afternoonTime = databaseHelper.getUserStudyTimesInPeriods(userId,"Afternoon");
+        Log.d(TAG, "Afternoon Time: " + afternoonTime);
+        long eveningTime = databaseHelper.getUserStudyTimesInPeriods(userId,"Evening");
+        Log.d(TAG, "Evening Time: " + eveningTime);
 
         List<DataEntry> data = new java.util.ArrayList<>();
 
 
         anyChartView.setChart(barChart);
 
-    }
-
-    private long getTotalStudyTimeInPeriod(String period) {
-        List<String> studyTimes = databaseHelper.getUserStudyTimesInPeriods(userId, period);
-        long totalTime = 0;
-        for (String time : studyTimes) {
-            totalTime += ProfileActivity.convertTimeToMillis(time);
-        }
-        Log.d(TAG, period + " time: " + totalTime);
-        return totalTime;
     }
 }

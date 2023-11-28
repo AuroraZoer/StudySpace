@@ -52,10 +52,14 @@ public class PieFragment extends Fragment {
         AnyChartView anyChartView = view.findViewById(R.id.pie_chart_view);
 
         Pie pieChart = AnyChart.pie();
-        long building1Time = getTotalStudyTimeInBuilding("Building 1");
-        long building2Time = getTotalStudyTimeInBuilding("Building 2");
-        long building3Time = getTotalStudyTimeInBuilding("Building 3");
-        long building4Time = getTotalStudyTimeInBuilding("Building 4");
+        long building1Time = databaseHelper.getUserStudyTimesInBuilding(userId, "Building 1");
+        Log.d(TAG, "Building 1 Time: " + building1Time);
+        long building2Time = databaseHelper.getUserStudyTimesInBuilding(userId, "Building 2");
+        Log.d(TAG, "Building 2 Time: " + building2Time);
+        long building3Time = databaseHelper.getUserStudyTimesInBuilding(userId, "Building 3");
+        Log.d(TAG, "Building 3 Time: " + building3Time);
+        long building4Time = databaseHelper.getUserStudyTimesInBuilding(userId, "Building 4");
+        Log.d(TAG, "Building 4 Time: " + building4Time);
 
         List<DataEntry> data = new java.util.ArrayList<>();
         data.add(new ValueDataEntry("Building 1", building1Time));
@@ -88,15 +92,5 @@ public class PieFragment extends Fragment {
         pieChart.tooltip().enabled(false);
 
         anyChartView.setChart(pieChart);
-    }
-
-    private long getTotalStudyTimeInBuilding(String buildingName) {
-        List<String> studyTimes = databaseHelper.getUserStudyTimesInBuilding(userId, buildingName);
-        long totalTime = 0;
-        for (String time : studyTimes) {
-            totalTime += ProfileActivity.convertTimeToMillis(time);
-        }
-        Log.d(TAG, buildingName + " time: " + totalTime);
-        return totalTime;
     }
 }

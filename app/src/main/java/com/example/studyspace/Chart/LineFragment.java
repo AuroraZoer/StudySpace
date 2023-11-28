@@ -40,7 +40,11 @@ public class LineFragment extends Fragment {
         databaseHelper = new DBUtil(getActivity());
 
         AnyChartView anyChartView = view.findViewById(R.id.line_chart_view);
+
         Cartesian lineChart = AnyChart.line();
+
+
+
 
         anyChartView.setChart(lineChart);
     }
