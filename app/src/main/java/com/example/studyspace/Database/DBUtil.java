@@ -550,6 +550,14 @@ public class DBUtil extends SQLiteOpenHelper {
         return totalMillis;
     }
 
+    /**
+     * Get the user's study times in the specified time of day and date
+     *
+     * @param userID    The user ID
+     * @param timeOfDay The time of day
+     * @param date      The date
+     * @return The total study time in specified time of day and date
+     */
     public long getUserStudyTimesInPeriodsAndDate(int userID, String timeOfDay, String date) {
         SQLiteDatabase db = this.getReadableDatabase();
         List<String> studyTimes = new ArrayList<>();
@@ -577,6 +585,17 @@ public class DBUtil extends SQLiteOpenHelper {
         return totalMillis;
     }
 
+    /**
+     * Get the user's study times for the specified date range
+     *
+     * @param userID    The user ID
+     * @param startDate The start date of the date range in "yyyy-MM-dd" format
+     * @param endDate   The end date of the date range in "yyyy-MM-dd" format
+     * @return DailyStudyTimes object containing maps for total, morning, afternoon, and evening study times.
+     *         Each map holds the date as a key in "yyyy-MM-dd" format and the study time in milliseconds as a value.
+     *         TotalTimes map contains the total study time for each day.
+     *         MorningTimes, AfternoonTimes, and EveningTimes maps contain the study time for each respective period of the day.
+     */
     public DailyStudyTimes getDailyStudyTimesForRange(int userID, String startDate, String endDate) {
         DailyStudyTimes studyTimes = new DailyStudyTimes();
         LocalDate start = LocalDate.parse(startDate);
@@ -602,7 +621,6 @@ public class DBUtil extends SQLiteOpenHelper {
 
         return studyTimes;
     }
-
 
 
 }
