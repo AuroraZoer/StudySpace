@@ -38,6 +38,6 @@
     <string name="building">Building</string>
     <string name="date">Date</string>
     <string name="chart">Chart</string>
-
+    <string name="time_of_day">Time of Day</string>
 
 </resources>

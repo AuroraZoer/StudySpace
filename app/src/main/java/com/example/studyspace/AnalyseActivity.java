@@ -15,7 +15,7 @@ public class AnalyseActivity extends AppCompatActivity {
     private static final String TAG = "AnalyseActivity";
     DBUtil databaseHelper;
     int userId;
-    TextView tvAnalyse1, tvAnalyse2, tvAnalyse3;
+    TextView tvAnalyse1, tvAnalyse2, tvAnalyse3, tvAnalyse4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +37,8 @@ public class AnalyseActivity extends AppCompatActivity {
         tvAnalyse2.setOnClickListener(view -> openVisualisationActivity(2));
         tvAnalyse3 = findViewById(R.id.show_visualisation3);
         tvAnalyse3.setOnClickListener(view -> openVisualisationActivity(3));
+        tvAnalyse4 = findViewById(R.id.show_visualisation4);
+        tvAnalyse4.setOnClickListener(view -> openVisualisationActivity(4));
 
     }
 

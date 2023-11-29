@@ -11,12 +11,15 @@ import androidx.fragment.app.Fragment;
 import com.anychart.AnyChart;
 import com.anychart.AnyChartView;
 import com.anychart.chart.common.dataentry.DataEntry;
-import com.anychart.charts.Cartesian3d;
+import com.anychart.chart.common.dataentry.ValueDataEntry;
+import com.anychart.charts.Cartesian;
 import com.example.studyspace.Database.DBUtil;
 import com.example.studyspace.ProfileActivity;
 import com.example.studyspace.R;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class BarFragment extends Fragment {
     private static final String TAG = "BarFragment";
@@ -44,19 +47,38 @@ public class BarFragment extends Fragment {
         databaseHelper = new DBUtil(getActivity());
 
         AnyChartView anyChartView = view.findViewById(R.id.bar_chart_view);
-        Cartesian3d barChart = AnyChart.column3d();
+        Cartesian barChart = AnyChart.column();
 
-        long morningTime = databaseHelper.getUserStudyTimesInPeriods(userId,"Morning");
-        Log.d(TAG, "Morning Time: " + morningTime);
-        long afternoonTime = databaseHelper.getUserStudyTimesInPeriods(userId,"Afternoon");
-        Log.d(TAG, "Afternoon Time: " + afternoonTime);
-        long eveningTime = databaseHelper.getUserStudyTimesInPeriods(userId,"Evening");
-        Log.d(TAG, "Evening Time: " + eveningTime);
+        Map<String, Long> weeklyStudyTimes = databaseHelper.getStudyTimeByDayOfWeek(userId);
+        List<DataEntry> data = new ArrayList<>();
 
-        List<DataEntry> data = new java.util.ArrayList<>();
+        for (Map.Entry<String, Long> entry : weeklyStudyTimes.entrySet()) {
+            Log.d(TAG, "Day of Week: " + entry.getKey() + " Study Time: " + entry.getValue());
+            data.add(new ValueDataEntry(convertDayOfWeek(entry.getKey()), entry.getValue()));
+        }
 
-
+        barChart.data(data);
         anyChartView.setChart(barChart);
+    }
 
+    private String convertDayOfWeek(String dayOfWeek) {
+        switch (dayOfWeek) {
+            case "1":
+                return "Sunday";
+            case "2":
+                return "Monday";
+            case "3":
+                return "Tuesday";
+            case "4":
+                return "Wednesday";
+            case "5":
+                return "Thursday";
+            case "6":
+                return "Friday";
+            case "0":
+                return "Saturday";
+            default:
+                return "";
+        }
     }
 }

@@ -21,6 +21,7 @@ import com.example.studyspace.Database.DBUtil;
 import com.example.studyspace.ProfileActivity;
 import com.example.studyspace.R;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -61,7 +62,7 @@ public class PieFragment extends Fragment {
         long building4Time = databaseHelper.getUserStudyTimesInBuilding(userId, "Building 4");
         Log.d(TAG, "Building 4 Time: " + building4Time);
 
-        List<DataEntry> data = new java.util.ArrayList<>();
+        List<DataEntry> data = new ArrayList<>();
         data.add(new ValueDataEntry("Building 1", building1Time));
         data.add(new ValueDataEntry("Building 2", building2Time));
         data.add(new ValueDataEntry("Building 3", building3Time));

@@ -8,7 +8,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="600dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:orientation="vertical">
 
@@ -26,7 +26,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
-            android:layout_marginTop="10dp"
             android:layout_marginRight="30dp"
             android:layout_marginBottom="20dp"
             android:gravity="center"
@@ -84,7 +83,7 @@
                         android:layout_marginTop="18dp"
                         android:layout_marginEnd="10dp"
                         android:layout_toRightOf="@+id/analyse_Time"
-                        android:src="@drawable/baseline_bar_chart_24" />
+                        android:src="@drawable/baseline_bar_chart_24_yellow" />
 
                     <ImageButton
                         android:layout_width="wrap_content"
@@ -101,7 +100,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
-            android:layout_marginTop="10dp"
             android:layout_marginRight="30dp"
             android:layout_marginBottom="20dp"
             android:gravity="center"
@@ -177,7 +175,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
-            android:layout_marginTop="10dp"
             android:layout_marginRight="30dp"
             android:layout_marginBottom="20dp"
             android:gravity="center"
@@ -249,47 +246,82 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="20dp"
+            android:gravity="center"
+            app:cardCornerRadius="15dp"
+            app:cardElevation="3dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/light4"
+                android:orientation="horizontal">
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="15dp"
+                    app:lottie_autoPlay="true"
+                    app:lottie_loop="true"
+                    app:lottie_rawRes="@raw/barchart3d" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/analyse_timeOfDay"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/baloo_bhaina"
+                        android:text="@string/time_of_day"
+                        android:textColor="@color/primary"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/show_visualisation4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/analyse_timeOfDay"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="20dp"
+                        android:fontFamily="@font/baloo_bhaina"
+                        android:text="@string/show_visualisation"
+                        android:textColor="@color/primary"
+                        android:textSize="20sp" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="18dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="15dp"
+                        android:layout_toRightOf="@+id/analyse_timeOfDay"
+                        android:src="@drawable/baseline_bar_chart_24" />
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/baseline_auto_awesome_24" />
+
+                </RelativeLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
     </LinearLayout>
-
-    <!--            <Button-->
-    <!--                android:id="@+id/button1"-->
-    <!--                android:layout_width="wrap_content"-->
-    <!--                android:layout_height="wrap_content"-->
-    <!--                android:background="@drawable/button_selector"-->
-    <!--                android:fontFamily="@font/baloo_bhaina"-->
-    <!--                android:padding="0dp"-->
-    <!--                android:text="Time"-->
-    <!--                android:textSize="20sp" />-->
-
-    <!--            <Button-->
-    <!--                android:id="@+id/button2"-->
-    <!--                android:layout_width="wrap_content"-->
-    <!--                android:layout_height="wrap_content"-->
-    <!--                android:layout_marginStart="15dp"-->
-    <!--                android:layout_marginEnd="15dp"-->
-    <!--                android:background="@drawable/button_selector"-->
-    <!--                android:fontFamily="@font/baloo_bhaina"-->
-    <!--                android:paddingTop="0dp"-->
-    <!--                android:paddingBottom="0dp"-->
-    <!--                android:text="Building"-->
-    <!--                android:textSize="20sp" />-->
-
-    <!--            <Button-->
-    <!--                android:id="@+id/button3"-->
-    <!--                android:layout_width="wrap_content"-->
-    <!--                android:layout_height="wrap_content"-->
-    <!--                android:background="@drawable/button_selector"-->
-    <!--                android:fontFamily="@font/baloo_bhaina"-->
-    <!--                android:padding="0dp"-->
-    <!--                android:text="Date"-->
-    <!--                android:textSize="20sp" />-->
-
-    <!--    <com.anychart.AnyChartView-->
-    <!--        android:id="@+id/any_chart_view"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="400dp"-->
-    <!--        android:layout_centerInParent="true" />-->
-
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"

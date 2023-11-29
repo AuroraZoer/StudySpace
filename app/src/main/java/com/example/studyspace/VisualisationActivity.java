@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.example.studyspace.Chart.Bar3dFragment;
 import com.example.studyspace.Chart.BarFragment;
 import com.example.studyspace.Chart.LineFragment;
 import com.example.studyspace.Chart.PieFragment;
@@ -39,9 +40,12 @@ public class VisualisationActivity extends AppCompatActivity {
         } else if (visualisationType == 2) {
             fragment = new PieFragment();
             chartTitle.setText("Pie Chart");
-        } else {
+        } else if (visualisationType == 3) {
             fragment = new LineFragment();
             chartTitle.setText("Line Chart");
+        } else {
+            fragment = new Bar3dFragment();
+            chartTitle.setText("3d Bar Chart");
         }
         loadFragment(fragment, userId);
 

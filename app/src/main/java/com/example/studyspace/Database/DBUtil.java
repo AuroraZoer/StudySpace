@@ -195,7 +195,6 @@ public class DBUtil extends SQLiteOpenHelper {
         return user;
     }
 
-
     // StudyRoom table methods
 
     /**
@@ -339,7 +338,6 @@ public class DBUtil extends SQLiteOpenHelper {
 
         return roomID;
     }
-
 
     // StudyTime table methods
 
@@ -515,7 +513,6 @@ public class DBUtil extends SQLiteOpenHelper {
         return new Pair<>(earliestDate, latestDate);
     }
 
-
     /**
      * Get the user's study times in the specified building and time of day
      *
@@ -621,6 +618,25 @@ public class DBUtil extends SQLiteOpenHelper {
 
         return studyTimes;
     }
+
+    public Map<String, Long> getStudyTimeByDayOfWeek(int userID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Map<String, Long> weeklyStudyTimes = new LinkedHashMap<>();
+
+        // select day of week and sum of study time for each day of week
+        String query = "SELECT strftime('%w', " + TIME_COLUMN_DATE + "), SUM(" + TIME_COLUMN_TIME + ") FROM " + TABLE_STUDY_TIME + " WHERE " + TIME_COLUMN_USER_ID + " = ? GROUP BY strftime('%w', " + TIME_COLUMN_DATE + ")";
+        Cursor cursor = db.rawQuery(query, new String[] {String.valueOf(userID)});
+
+        while (cursor.moveToNext()) {
+            String dayOfWeek = cursor.getString(0); // get day of week
+            long totalTime = cursor.getLong(1); // get total study time
+            weeklyStudyTimes.put(dayOfWeek, totalTime);
+        }
+        cursor.close();
+        db.close();
+        return weeklyStudyTimes;
+    }
+
 
 
 }
