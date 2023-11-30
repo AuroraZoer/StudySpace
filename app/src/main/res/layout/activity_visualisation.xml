@@ -31,14 +31,15 @@
         <TextView
             android:layout_width="380dp"
             android:layout_height="5dp"
-            android:background="@drawable/line"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="20dp"/>
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/line" />
 
         <FrameLayout
             android:id="@+id/fragment_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_marginBottom="50dp" />
 
     </LinearLayout>
 

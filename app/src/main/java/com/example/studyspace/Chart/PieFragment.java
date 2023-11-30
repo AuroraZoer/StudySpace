@@ -53,6 +53,7 @@ public class PieFragment extends Fragment {
         AnyChartView anyChartView = view.findViewById(R.id.pie_chart_view);
 
         Pie pieChart = AnyChart.pie();
+        pieChart.animation(true);
         long building1Time = databaseHelper.getUserStudyTimesInBuilding(userId, "Building 1");
         Log.d(TAG, "Building 1 Time: " + building1Time);
         long building2Time = databaseHelper.getUserStudyTimesInBuilding(userId, "Building 2");
@@ -83,10 +84,8 @@ public class PieFragment extends Fragment {
             public void onClick(Event event) {
                 String buildingName = event.getData().get("x");
                 long timeSpentMillis = Long.parseLong(Objects.requireNonNull(event.getData().get("value")));
-
                 String formattedTime = ProfileActivity.formatTime(timeSpentMillis);
                 String formattedMessage = buildingName + ": " + formattedTime;
-
                 Toast.makeText(getActivity(), formattedMessage, Toast.LENGTH_SHORT).show();
             }
         });

@@ -514,11 +514,11 @@ public class DBUtil extends SQLiteOpenHelper {
     }
 
     /**
-     * Get the user's study times in the specified building and time of day
+     * Get the user's study times in the specified date
      *
      * @param userID The user ID
      * @param date   The date
-     * @return The total study time in specified building and time of day
+     * @return The total study time in specified date
      */
     public long getUserStudyTimesInDate(int userID, String date) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -620,20 +620,25 @@ public class DBUtil extends SQLiteOpenHelper {
     }
 
     public Map<String, Long> getStudyTimeByDayOfWeek(int userID) {
-        SQLiteDatabase db = this.getReadableDatabase();
+        Pair<String, String> dateRange = getUserStudyDateRange(userID);
+        LocalDate startDate = LocalDate.parse(dateRange.first);
+        LocalDate endDate = LocalDate.parse(dateRange.second);
+
         Map<String, Long> weeklyStudyTimes = new LinkedHashMap<>();
-
-        // select day of week and sum of study time for each day of week
-        String query = "SELECT strftime('%w', " + TIME_COLUMN_DATE + "), SUM(" + TIME_COLUMN_TIME + ") FROM " + TABLE_STUDY_TIME + " WHERE " + TIME_COLUMN_USER_ID + " = ? GROUP BY strftime('%w', " + TIME_COLUMN_DATE + ")";
-        Cursor cursor = db.rawQuery(query, new String[] {String.valueOf(userID)});
-
-        while (cursor.moveToNext()) {
-            String dayOfWeek = cursor.getString(0); // get day of week
-            long totalTime = cursor.getLong(1); // get total study time
-            weeklyStudyTimes.put(dayOfWeek, totalTime);
+        // initialize map with days of week
+        String[] daysOfWeek = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+        for (String day : daysOfWeek) {
+            weeklyStudyTimes.put(day, 0L);
         }
-        cursor.close();
-        db.close();
+
+        LocalDate date = startDate;
+        while (!date.isAfter(endDate)) {
+            long dailyTime = getUserStudyTimesInDate(userID, date.format(DateTimeFormatter.ISO_LOCAL_DATE));
+            String dayOfWeek = daysOfWeek[date.getDayOfWeek().getValue() % 7];
+            weeklyStudyTimes.put(dayOfWeek, weeklyStudyTimes.get(dayOfWeek) + dailyTime);
+            date = date.plusDays(1);
+        }
+
         return weeklyStudyTimes;
     }
 
