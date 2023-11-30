@@ -16,11 +16,6 @@ import com.anychart.chart.common.dataentry.ValueDataEntry;
 import com.anychart.chart.common.listener.Event;
 import com.anychart.chart.common.listener.ListenersInterface;
 import com.anychart.charts.Cartesian;
-
-import com.anychart.core.cartesian.series.Column;
-import com.anychart.enums.Anchor;
-import com.anychart.enums.Position;
-import com.anychart.enums.TooltipPositionMode;
 import com.example.studyspace.Database.DBUtil;
 import com.example.studyspace.ProfileActivity;
 import com.example.studyspace.R;

@@ -106,10 +106,10 @@ public class LineFragment extends Fragment {
                 .offsetY(5d)
                 .format("function() {\n" +
                         "   return this.getData('seriesName') + ': ' + this.getData('formattedTime');\n" +
-                        "}");  // tooltip format: seriesName: HH:MM:SSwjd
+                        "}");  // tooltip format: seriesName: HH:MM:SS
     }
 
-    private class CustomDataEntry extends ValueDataEntry {
+    private static class CustomDataEntry extends ValueDataEntry {
         CustomDataEntry(String x, Number value, String seriesName, String formattedTime) {
             super(x, value);
             setValue("seriesName", seriesName);
