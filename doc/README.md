@@ -7,6 +7,7 @@
 - Click [here](https://youtu.be/0Scy31VG_Yc) to watch the Alpha milestone video.
 - [Beta milestone report](./Project_Beta_submission.pdf)
 - Click [here](https://youtu.be/p8YCdtdoTZA) to watch the Beta milestone video.
+- Click [here](https://youtu.be/xoUFYdvfGMo) to watch the Final submission video.
 
 ## Database
 
